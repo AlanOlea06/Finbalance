@@ -30,7 +30,7 @@ export default function RootLayout() {
 
           // 2. MODIFICAR LA DERECHA (Ej. Un botón de configuración)
           headerRight: () => (
-            
+
             <TouchableOpacity onPress={() => Alert.alert('Ajustes', 'Abriendo ajustes...')}>
               <Ionicons name="settings-outline" size={24} color="black" />
             </TouchableOpacity>
