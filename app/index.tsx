@@ -1,37 +1,33 @@
+import { MyButton } from '@/components/ui/boton';
 import { useRouter } from 'expo-router';
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const Welcome = () => {
+const Index = () => {
   const router = useRouter();
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.content}> 
+    <>
+      <SafeAreaView style={styles.container}>
         {/* Logo Section */}
-        <View style={styles.logoSection}>
-          <Text style={styles.title}>Finbalance</Text>
-          <Text style={styles.subtitle}>Bienvenido de nuevo</Text>
-        </View>
+        <Text style={styles.title}>Finbalance</Text>
+        <Text style={styles.subtitle}>Bienvenido de nuevo</Text>
 
         {/* Buttons Section */}
         <View style={styles.buttonSection}>
-          <TouchableOpacity
-            style={styles.primaryButton}
-            onPress={() => router.push('./(app)/dashboard') }
-          >
-            <Text style={styles.primaryButtonText}>Ir al Dashboard</Text>
-          </TouchableOpacity>
-					<TouchableOpacity
-            style={styles.primaryButton}
-            onPress={() => router.push('/login') }
-          >
-            <Text style={styles.primaryButtonText}>Iniciar sesión</Text>
-          </TouchableOpacity>
+          <MyButton size={500} type="primary" text="Ir al Dashboard" align="center" 
+            onPress={() => router.push('./(app)/dashboard')}
+          />
+          <MyButton size={500} type="primary" text="Iniciar sesión" align="center" 
+            onPress={() => router.push('/login')}
+          />
+          <MyButton size={500} type="secondary" text="Registrarse" align="center" 
+            onPress={() => router.push('/login')}
+          />
         </View>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </>
   );
 };
 
@@ -39,19 +35,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F7F5E8',
-  },
-  content: {
-    flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 24,
-		width: '50%',
   },
-  logoSection: {
-    alignItems: 'center',
-    marginBottom: 80,
-  },
-  // Text styles
   title: {
     fontSize: 32,
     fontWeight: 'bold',
@@ -67,22 +52,11 @@ const styles = StyleSheet.create({
     marginTop: 4,
     textAlign: 'center',
   },
-  // Button styles
   buttonSection: {
+    marginTop: 80,
     width: '100%',
     gap: 12,
   },
-  primaryButton: {
-    backgroundColor: '#0C9488',
-    paddingVertical: 16,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  primaryButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '600',
-  },
 });
 
-export default Welcome;
+export default Index;

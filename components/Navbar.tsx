@@ -33,7 +33,7 @@ const Navbar = () => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 60,
+    height: 70,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
