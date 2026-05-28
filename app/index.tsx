@@ -6,25 +6,28 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Index = () => {
   const router = useRouter();
+  
 
   return (
     <>
       <SafeAreaView style={styles.container}>
-        {/* Logo Section */}
-        <Text style={styles.title}>Finbalance</Text>
-        <Text style={styles.subtitle}>Bienvenido de nuevo</Text>
+        <View style={{ alignItems: 'center' }}>
+          {/* Logo Section */}
+          <Text style={styles.title}>Finbalance</Text>
+          <Text style={styles.subtitle}>Bienvenido de nuevo</Text>
 
-        {/* Buttons Section */}
-        <View style={styles.buttonSection}>
-          <MyButton size={500} type="primary" text="Ir al Dashboard" align="center" 
-            onPress={() => router.push('./(app)/dashboard')}
-          />
-          <MyButton size={500} type="primary" text="Iniciar sesión" align="center" 
-            onPress={() => router.push('/login')}
-          />
-          <MyButton size={500} type="secondary" text="Registrarse" align="center" 
-            onPress={() => router.push('/login')}
-          />
+          {/* Buttons Section */}
+          <View style={styles.buttonSection}>
+            <MyButton size={500} type="primary" text="Ir al Dashboard" align="center" 
+              onPress={() => router.push('./(app)/dashboard')}
+            />
+            <MyButton size={500} type="primary" text="Iniciar sesión" align="center" 
+              onPress={() => router.push('/login')}
+            />
+            <MyButton size={500} type="secondary" text="Registrarse" align="center" 
+              onPress={() => router.push('/login')}
+            />
+          </View>
         </View>
       </SafeAreaView>
     </>

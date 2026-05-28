@@ -19,6 +19,7 @@ type Props = {
 	align?: ButtonAlign;
 	onPress?: () => Promise<void> | void;
 	disabled?: boolean;
+	icon?: string; // TODO: Implement icon support 
 }
 
 export function MyButton({
@@ -66,7 +67,7 @@ export function MyButton({
 					paddingVertical: paddingVertical || 16,
 					width: size,
 					borderRadius: 8,
-					alignSelf: alignMap[align],
+		
 					backgroundColor: isPrimary ? ButtonColors.primary : ButtonColors.secondary,
 				}
 			]}
@@ -81,7 +82,7 @@ export function MyButton({
 				<Text
 					style={[
 						styles.buttonText,
-						{ color: isPrimary ? ButtonColors.primaryText : ButtonColors.secondaryText }
+						{ alignSelf: alignMap[align], color: isPrimary ? ButtonColors.primaryText : ButtonColors.secondaryText }
 					]}
 					adjustsFontSizeToFit
 					minimumFontScale={0.7}
