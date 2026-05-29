@@ -7,10 +7,15 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  useWindowDimensions, // 1. IMPORTAMOS EL HOOK AQUÍ
 } from "react-native";
 
 export default function PantallaOnboarding() {
   const [salarioFijo, setSalarioFijo] = useState(true);
+
+  // 2. DEFINIMOS EL ANCHO DE LA PANTALLA Y LA VARIABLE esMovil AQUÍ
+  const { width } = useWindowDimensions();
+  const esMovil = width < 768; // Si mide menos de 768px, es un móvil
 
   return (
     <View style={styles.mainContainer}>
@@ -145,47 +150,52 @@ export default function PantallaOnboarding() {
         </ScrollView>
       </View>
 
-      {/*LADO DERECHO BLANCO*/}
-      <View style={styles.rightSide}>
-        <View style={styles.infoContainer}>
-          <Text style={styles.infoTitle}>Toma el control de tus finanzas</Text>
-          <Text style={styles.infoDescription}>
-            Gestiona tus gastos, ahorra de manera inteligente y alcanza tus
-            metas financieras con Finbalance.
-          </Text>
+      {/* LADO DERECHO BLANCO */}
+      {!esMovil && (
+        <View style={styles.rightSide}>
+          <View style={styles.infoContainer}>
+            <Text style={styles.infoTitle}>
+              Toma el control de tus finanzas
+            </Text>
+            <Text style={styles.infoDescription}>
+              Gestiona tus gastos, ahorra de manera inteligente y alcanza tus
+              metas financieras con Finbalance.
+            </Text>
 
-          {/* mucho texto */}
-          <View style={styles.listItem}>
-            <Text style={styles.checkIcon}>✓</Text>
-            <View>
-              <Text style={styles.listTitle}>Seguimiento en tiempo real</Text>
-              <Text style={styles.listDesc}>
-                Visualiza tus ingresos y gastos al instante
-              </Text>
+            {/* mucho texto */}
+            <View style={styles.listItem}>
+              <Text style={styles.checkIcon}>✓</Text>
+              <View>
+                <Text style={styles.listTitle}>Seguimiento en tiempo real</Text>
+                <Text style={styles.listDesc}>
+                  Visualiza tus ingresos y gastos al instante
+                </Text>
+              </View>
             </View>
-          </View>
 
-          <View style={styles.listItem}>
-            <Text style={styles.checkIcon}>✓</Text>
-            <View>
-              <Text style={styles.listTitle}>Reportes detallados</Text>
-              <Text style={styles.listDesc}>
-                Obtén de manera gratuita una noción real de tu ganancia neta
-              </Text>
+            <View style={styles.listItem}>
+              <Text style={styles.checkIcon}>✓</Text>
+              <View>
+                <Text style={styles.listTitle}>Reportes detallados</Text>
+                <Text style={styles.listDesc}>
+                  Obtén de manera gratuita una noción real de tu ganancia neta
+                </Text>
+              </View>
             </View>
-          </View>
 
-          <View style={styles.listItem}>
-            <Text style={styles.checkIcon}>✓</Text>
-            <View>
-              <Text style={styles.listTitle}>Seguro y privado</Text>
-              <Text style={styles.listDesc}>
-                Toda la información que compartas estará protegida
-              </Text>
+            <View style={styles.listItem}>
+              <Text style={styles.checkIcon}>✓</Text>
+              <View>
+                <Text style={styles.listTitle}>Seguro y privado</Text>
+                <Text style={styles.listDesc}>
+                  Toda la información que compartas estará protegida
+                </Text>
+              </View>
             </View>
           </View>
         </View>
-      </View>
+      )}
+      {/* 3. ¡AQUÍ CERRAMOS LA CONDICIÓN ES MOVIL*/}
     </View>
   );
 }

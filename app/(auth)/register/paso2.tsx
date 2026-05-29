@@ -119,7 +119,7 @@ export default function PantallaConfiguracionPerfil() {
             {/* Footer */}
             <View style={styles.footerRow}>
               <Text style={styles.footerText}>¿Ya tienes una cuenta? </Text>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => router.push("/(auth)/login")}>
                 <Text style={styles.footerLink}>Iniciar sesión</Text>
               </TouchableOpacity>
             </View>

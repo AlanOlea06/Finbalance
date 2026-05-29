@@ -92,7 +92,11 @@ export default function PantallaLogin() {
               </TouchableOpacity>
             </View>
 
-            <TouchableOpacity style={styles.btnLogin} activeOpacity={0.8}>
+            <TouchableOpacity
+              onPress={() => router.push("/(app)/dashboard")}
+              style={styles.btnLogin}
+              activeOpacity={0.8}
+            >
               <Text style={styles.btnLoginText}>Iniciar sesión</Text>
             </TouchableOpacity>
 
