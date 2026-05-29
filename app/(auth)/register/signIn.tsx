@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import React, { useState } from "react"; // Asegúrate de importar useState
+import React, { useState } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -10,6 +10,7 @@ import {
   View,
 } from "react-native";
 
+// Interfaz para los beneficios del lado derecho
 interface BeneficioProps {
   titulo: string;
   desc: string;
@@ -27,29 +28,52 @@ const BeneficioItem = ({ titulo, desc }: BeneficioProps) => (
   </View>
 );
 
-export default function PantallaLogin() {
+export default function PantallaRegistro() {
   const { width } = useWindowDimensions();
   const esMovil = width < 768;
 
-  // NUEVO: Estado para controlar la visibilidad de la contraseña
-  const [mostrarPassword, setMostrarPassword] = useState(false);
+  // Estados para mostrar/ocultar las dos contraseñas
+  const [verPass, setVerPass] = useState(false);
+  const [verConfirmPass, setVerConfirmPass] = useState(false);
 
   return (
     <View style={styles.mainContainer}>
+      {/* LADO IZQUIERDO (VERDE) - REGISTRO*/}
       <View style={styles.leftSide}>
         <ScrollView contentContainerStyle={styles.scrollContent}>
-          <Text style={styles.logoText}>Finbalance</Text>
+          {/* Logo y Progreso */}
+          <View style={styles.header}>
+            <Text style={styles.logoText}>Finbalance</Text>
+            <View style={styles.progressRow}>
+              <Text style={styles.progressText}>Paso 1 de 4</Text>
+              <Text style={styles.progressText}>25%</Text>
+            </View>
+            <View style={styles.progressBarBg}>
+              <View style={[styles.progressBarFill, { width: "25%" }]} />
+            </View>
+          </View>
 
           <View style={styles.formContainer}>
-            <Text style={styles.welcomeTitle}>Bienvenido de nuevo</Text>
-            <Text style={styles.welcomeSubtitle}>
-              Ingresa a tu cuenta para continuar
+            <Text style={styles.mainTitle}>Crea tu cuenta</Text>
+            <Text style={styles.mainSubtitle}>
+              Completa tus datos para comenzar
             </Text>
 
-            {/* Input de Correo */}
+            {/* Input: Nombre Completo */}
+            <Text style={styles.label}>Nombre completo</Text>
+            <View style={styles.inputWrapper}>
+              <Text style={styles.icon}>👤</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Tu nombre"
+                placeholderTextColor="#999"
+              />
+            </View>
+
+            {/* Input: Correo */}
             <Text style={styles.label}>Correo electrónico</Text>
             <View style={styles.inputWrapper}>
-              <Text style={styles.iconPlaceholder}>✉</Text>
+              <Text style={styles.icon}>✉</Text>
               <TextInput
                 style={styles.input}
                 placeholder="tu@email.com"
@@ -59,55 +83,59 @@ export default function PantallaLogin() {
               />
             </View>
 
-            {/* Input de Contraseña (ACTUALIZADO) */}
+            {/* Input: Contraseña */}
             <Text style={styles.label}>Contraseña</Text>
             <View style={styles.inputWrapper}>
-              <Text style={styles.iconPlaceholder}>🔒</Text>
+              <Text style={styles.icon}>🔒</Text>
               <TextInput
                 style={styles.input}
                 placeholder="••••••••"
                 placeholderTextColor="#999"
-                secureTextEntry={!mostrarPassword} // Depende del estado
+                secureTextEntry={!verPass}
               />
+              <TouchableOpacity onPress={() => setVerPass(!verPass)}>
+                <Text style={styles.icon}>{verPass ? "🙈" : "👁"}</Text>
+              </TouchableOpacity>
+            </View>
 
-              {/* Botón para mostrar/ocultar */}
+            {/* Input: Confirmar Contraseña */}
+            <Text style={styles.label}>Confirmar contraseña</Text>
+            <View style={styles.inputWrapper}>
+              <Text style={styles.icon}>🔒</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="••••••••"
+                placeholderTextColor="#999"
+                secureTextEntry={!verConfirmPass}
+              />
               <TouchableOpacity
-                onPress={() => setMostrarPassword(!mostrarPassword)}
-                activeOpacity={0.7}
+                onPress={() => setVerConfirmPass(!verConfirmPass)}
               >
-                <Text style={styles.iconPlaceholder}>
-                  {mostrarPassword ? "😲" : "🫣"}
-                </Text>
+                <Text style={styles.icon}>{verConfirmPass ? "🙈" : "👁"}</Text>
               </TouchableOpacity>
             </View>
 
-            {/* Opciones y Botón Iniciar Sesión ... (resto del código igual) */}
-            <View style={styles.optionsRow}>
-              <View style={styles.checkboxGroup}>
-                <View style={styles.checkbox} />
-                <Text style={styles.optionText}>Recordarme</Text>
-              </View>
-              <TouchableOpacity>
-                <Text style={styles.optionText}>¿Olvidaste tu contraseña?</Text>
-              </TouchableOpacity>
-            </View>
-
-            <TouchableOpacity style={styles.btnLogin} activeOpacity={0.8}>
-              <Text style={styles.btnLoginText}>Iniciar sesión</Text>
+            {/* Botón Continuar */}
+            <TouchableOpacity
+              onPress={() => router.push("/register/paso2")}
+              style={styles.btnContinue}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.btnContinueText}>Continuar</Text>
             </TouchableOpacity>
 
-            <View style={styles.signupFooter}>
-              <Text style={styles.signupText}>¿No tienes una cuenta? </Text>
-              <TouchableOpacity
-                onPress={() => router.push("../register/signIn")}
-              >
-                <Text style={styles.signupLink}>Crear cuenta</Text>
+            {/* Footer */}
+            <View style={styles.footerRow}>
+              <Text style={styles.footerText}>¿Ya tienes una cuenta? </Text>
+              <TouchableOpacity onPress={() => router.push("/login")}>
+                <Text style={styles.footerLink}>Iniciar sesión</Text>
               </TouchableOpacity>
             </View>
           </View>
         </ScrollView>
       </View>
 
+      {/* LADO DERECHO*/}
       {!esMovil && (
         <View style={styles.rightSide}>
           <View style={styles.infoContent}>
@@ -140,24 +168,36 @@ export default function PantallaLogin() {
 
 const styles = StyleSheet.create({
   mainContainer: { flex: 1, flexDirection: "row" },
-  leftSide: { flex: 1, backgroundColor: "#0C9488" },
+
+  // LADO IZQUIERDO
+  leftSide: { flex: 1, backgroundColor: "#0F8B7B" },
   scrollContent: { padding: 40, flexGrow: 1, justifyContent: "center" },
+
+  header: { marginBottom: 30 },
   logoText: {
     fontSize: 32,
     fontWeight: "bold",
     color: "#FFF",
-    position: "absolute",
-    top: 40,
-    left: 40,
+    marginBottom: 20,
   },
+  progressRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 8,
+  },
+  progressText: { color: "#FFF", fontSize: 15, fontWeight: "600" },
+  progressBarBg: { height: 6, backgroundColor: "#0B6D60", borderRadius: 3 },
+  progressBarFill: { height: "100%", backgroundColor: "#FFF", borderRadius: 3 },
+
   formContainer: { maxWidth: 450, width: "100%", alignSelf: "center" },
-  welcomeTitle: {
+  mainTitle: {
     fontSize: 32,
     fontWeight: "bold",
     color: "#FFF",
-    marginBottom: 10,
+    marginBottom: 8,
   },
-  welcomeSubtitle: { fontSize: 16, color: "#A3D5CE", marginBottom: 30 },
+  mainSubtitle: { fontSize: 16, color: "#A3D5CE", marginBottom: 25 },
+
   label: { color: "#FFF", fontSize: 14, marginBottom: 8, fontWeight: "600" },
   inputWrapper: {
     flexDirection: "row",
@@ -165,52 +205,35 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: "center",
     paddingHorizontal: 15,
-    marginBottom: 20,
+    marginBottom: 18,
   },
-  iconPlaceholder: { fontSize: 18, color: "#666", marginRight: 10 },
-
-  // Input con la corrección del borde negro para Web
+  icon: { fontSize: 18, color: "#666", marginRight: 10 },
   input: {
     flex: 1,
     paddingVertical: 12,
     color: "#333",
     fontSize: 15,
-    outlineStyle: "none" as any,
+    outlineStyle: "none" as any, // Quita el borde negro en web
   },
 
-  optionsRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 30,
-  },
-  checkboxGroup: { flexDirection: "row", alignItems: "center" },
-  checkbox: {
-    width: 18,
-    height: 18,
-    borderWidth: 1,
-    borderColor: "#A3D5CE",
-    borderRadius: 4,
-    marginRight: 8,
-  },
-  optionText: { color: "#FFF", fontSize: 13 },
-  btnLogin: {
+  btnContinue: {
     backgroundColor: "#FFF",
     paddingVertical: 15,
     borderRadius: 8,
     alignItems: "center",
+    marginTop: 10,
   },
-  btnLoginText: { color: "#0F8B7B", fontWeight: "bold", fontSize: 16 },
-  signupFooter: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginTop: 30,
-  },
-  signupText: { color: "#FFF" },
-  signupLink: {
+  btnContinueText: { color: "#0F8B7B", fontWeight: "bold", fontSize: 16 },
+
+  footerRow: { flexDirection: "row", justifyContent: "center", marginTop: 25 },
+  footerText: { color: "#FFF" },
+  footerLink: {
     color: "#FFF",
     fontWeight: "bold",
     textDecorationLine: "underline",
   },
+
+  // LADO DERECHO
   rightSide: {
     flex: 1,
     backgroundColor: "#FFF",
@@ -225,6 +248,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   infoDesc: { fontSize: 16, color: "#666", marginBottom: 40, lineHeight: 24 },
+
   benefitItem: { flexDirection: "row", marginBottom: 25 },
   checkCircle: {
     width: 24,

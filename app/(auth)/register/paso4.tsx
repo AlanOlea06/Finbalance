@@ -1,11 +1,12 @@
+import { router } from "expo-router";
 import React, { useState } from "react";
 import {
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 export default function PantallaOnboarding() {
@@ -128,10 +129,16 @@ export default function PantallaOnboarding() {
 
           {/* Botones de Footer */}
           <View style={styles.footerRow}>
-            <TouchableOpacity style={styles.btnBack}>
+            <TouchableOpacity
+              onPress={() => router.push("/(auth)/register/paso3")}
+              style={styles.btnBack}
+            >
               <Text style={styles.btnBackText}>Atrás</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.btnFinish}>
+            <TouchableOpacity
+              onPress={() => router.push("/(app)/dashboard")}
+              style={styles.btnFinish}
+            >
               <Text style={styles.btnFinishText}>Finalizar Creación</Text>
             </TouchableOpacity>
           </View>
