@@ -67,7 +67,7 @@ export function MyButton({
 					paddingVertical: paddingVertical || 16,
 					width: size,
 					borderRadius: 8,
-		
+					alignSelf: alignMap[align],
 					backgroundColor: isPrimary ? ButtonColors.primary : ButtonColors.secondary,
 				}
 			]}
