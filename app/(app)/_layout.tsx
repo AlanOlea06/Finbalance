@@ -2,17 +2,20 @@ import { Slot } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Navbar from '../../components/Navbar';
 
 const UserLoggedLayout = () => {
   return (
-    <View style={styles.container}>
-      <StatusBar style="light" />
-      <Navbar />
-      <View style={styles.content}>
-        <Slot />
+    <SafeAreaProvider>
+      <View style={styles.container}>
+        <StatusBar style="light" />
+        <Navbar />
+        <View style={styles.content}>
+          <Slot />
+        </View>
       </View>
-    </View>
+    </SafeAreaProvider>
   );
 };
 

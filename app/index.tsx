@@ -20,23 +20,16 @@ const Index = () => {
             <MyButton
               size={500}
               type="primary"
-              text="Ir al Dashboard"
-              align="center"
-              onPress={() => router.push("./(app)/dashboard")}
-            />
-            <MyButton
-              size={500}
-              type="primary"
               text="Iniciar sesión"
               align="center"
-              onPress={() => router.push("../(auth)/login")}
+              onPress={() => router.push("./(app)/dashboard")}
             />
             <MyButton
               size={500}
               type="secondary"
               text="Registrarse"
               align="center"
-              onPress={() => router.push("../(auth)/register/index")}
+              onPress={() => router.push("/login")}
             />
           </View>
         </View>

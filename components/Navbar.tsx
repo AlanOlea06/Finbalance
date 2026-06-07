@@ -21,7 +21,7 @@ const Navbar = () => {
 
   return (
     <>
-      <SafeAreaView edges={["top"]}>
+      <SafeAreaView>
         <View style={styles.container}>
           <TouchableOpacity activeOpacity={0.7} style={styles.logoContainer}>
             <Text
