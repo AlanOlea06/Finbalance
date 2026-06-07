@@ -1,8 +1,15 @@
-import { Ionicons } from '@expo/vector-icons';
-import { Href, useRouter } from 'expo-router';
-import React, { useState } from 'react';
-import { Modal, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Ionicons } from "@expo/vector-icons";
+import { Href, useRouter } from "expo-router";
+import React, { useState } from "react";
+import {
+  Modal,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
@@ -14,15 +21,29 @@ const Navbar = () => {
 
   return (
     <>
-      <SafeAreaView edges={['top']}>
+      <SafeAreaView edges={["top"]}>
         <View style={styles.container}>
           <TouchableOpacity activeOpacity={0.7} style={styles.logoContainer}>
-            <Text style={{ fontSize: 24, fontWeight: 'bold', color: "#FFFFFF" }}>Finbalance</Text>
+            <Text
+              style={{ fontSize: 24, fontWeight: "bold", color: "#FFFFFF" }}
+            >
+              Finbalance
+            </Text>
           </TouchableOpacity>
 
           <View style={styles.iconsContainer}>
-            <Ionicons name="notifications-outline" size={28} color="#FFFFFF" onPress={() => handleNavigation('/(app)/dashboard')} />
-            <Ionicons name="person-circle-outline" size={28} color="#FFFFFF" onPress={() => setVisible(true)} />
+            <Ionicons
+              name="notifications-outline"
+              size={28}
+              color="#FFFFFF"
+              onPress={() => handleNavigation("/(app)/dashboard")}
+            />
+            <Ionicons
+              name="person-circle-outline"
+              size={28}
+              color="#FFFFFF"
+              onPress={() => setVisible(true)}
+            />
           </View>
           {/* El Dropdown usando un Modal flotante */}
           <Modal
@@ -34,7 +55,6 @@ const Navbar = () => {
             {/* Este toque de fondo cierra el menú si tocas fuera de él */}
             <TouchableWithoutFeedback onPress={() => setVisible(false)}>
               <View style={{ flex: 1 }}>
-
                 {/* El contenedor del Dropdown */}
                 <View style={styles.dropdownContainer}>
                   {/* Contenido del menú */}
@@ -46,21 +66,33 @@ const Navbar = () => {
 
                     <View style={styles.divider} />
 
-                    <TouchableOpacity style={styles.menuItem} onPress={() => setVisible(false)}>
+                    <TouchableOpacity
+                      style={styles.menuItem}
+                      onPress={() => setVisible(false)}
+                    >
                       <Text style={styles.menuText}>Mi Perfil</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.menuItem} onPress={() => setVisible(false)}>
+                    <TouchableOpacity
+                      style={styles.menuItem}
+                      onPress={() => setVisible(false)}
+                    >
                       <Text style={styles.menuText}>Configuración</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.menuItem} onPress={() => setVisible(false)}>
-                      <Text style={[styles.menuText, styles.logoutText]}>Cerrar Sesión</Text>
+                    <TouchableOpacity
+                      style={styles.menuItem}
+                      onPress={() => {
+                        setVisible(false);
+                        router.push("/");
+                      }}
+                    >
+                      <Text style={[styles.menuText, styles.logoutText]}>
+                        Cerrar Sesión
+                      </Text>
                     </TouchableOpacity>
                   </View>
-
                 </View>
-
               </View>
             </TouchableWithoutFeedback>
           </Modal>
@@ -73,33 +105,33 @@ const Navbar = () => {
 const styles = StyleSheet.create({
   container: {
     height: 70,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     paddingHorizontal: 20,
-    backgroundColor: '#0C9488',
+    backgroundColor: "#0C9488",
   },
   logoContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   iconsContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 20,
   },
   dropdownContainer: {
-    position: 'absolute',
+    position: "absolute",
     top: 50, // Ajusta este número dependiendo de la altura de tu navbar
     right: 16,
-    alignItems: 'flex-end', // Alinea la flechita a la derecha
+    alignItems: "flex-end", // Alinea la flechita a la derecha
   },
   dropdownMenu: {
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
     width: 220,
     borderRadius: 8,
     paddingVertical: 8,
     // Sombras para iOS y Android
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,
     shadowRadius: 10,
@@ -111,17 +143,17 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 14,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: "bold",
+    color: "#333",
   },
   email: {
     fontSize: 12,
-    color: '#777',
+    color: "#777",
     marginTop: 2,
   },
   divider: {
     height: 1,
-    backgroundColor: '#eee',
+    backgroundColor: "#eee",
     marginVertical: 8,
   },
   menuItem: {
@@ -130,11 +162,11 @@ const styles = StyleSheet.create({
   },
   menuText: {
     fontSize: 14,
-    color: '#333',
+    color: "#333",
   },
   logoutText: {
-    color: '#dc2626',
-    fontWeight: '500',
+    color: "#dc2626",
+    fontWeight: "500",
   },
 });
 

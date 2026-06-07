@@ -1,141 +1,124 @@
-import { router } from "expo-router";
-import React, { useState } from "react"; // Asegúrate de importar useState
+import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import React, { useState } from "react";
 import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  useWindowDimensions,
-  View,
+    Platform,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    useWindowDimensions,
+    View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import BenefitSide from "../../components/BenefitSide";
+import PasswordInput from "../../components/PasswordInput";
 
-interface BeneficioProps {
-  titulo: string;
-  desc: string;
-}
-
-const BeneficioItem = ({ titulo, desc }: BeneficioProps) => (
-  <View style={styles.benefitItem}>
-    <View style={styles.checkCircle}>
-      <Text style={styles.checkText}>✓</Text>
-    </View>
-    <View>
-      <Text style={styles.benefitTitle}>{titulo}</Text>
-      <Text style={styles.benefitDesc}>{desc}</Text>
-    </View>
-  </View>
-);
-
-export default function PantallaLogin() {
+export default function Login() {
+  const router = useRouter();
   const { width } = useWindowDimensions();
-  const esMovil = width < 768;
+  const esMovil = width < 768; // Lógica para ocultar el lado blanco en celulares
 
-  // NUEVO: Estado para controlar la visibilidad de la contraseña
-  const [mostrarPassword, setMostrarPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = () => {
+    if (!email || !password) {
+      alert("Por favor, llena todos los campos.");
+      return;
+    }
+    // Aquí iría tu lógica de conexión con Supabase
+    alert("Iniciando sesión...");
+    // router.push("/(app)/dashboard");
+  };
 
   return (
     <View style={styles.mainContainer}>
-      <View style={styles.leftSide}>
-        <ScrollView contentContainerStyle={styles.scrollContent}>
-          <Text style={styles.logoText}>Finbalance</Text>
-
-          <View style={styles.formContainer}>
-            <Text style={styles.welcomeTitle}>Bienvenido de nuevo</Text>
-            <Text style={styles.welcomeSubtitle}>
-              Ingresa a tu cuenta para continuar
-            </Text>
-
-            {/* Input de Correo */}
-            <Text style={styles.label}>Correo electrónico</Text>
-            <View style={styles.inputWrapper}>
-              <Text style={styles.iconPlaceholder}>✉</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="tu@email.com"
-                placeholderTextColor="#999"
-                keyboardType="email-address"
-                autoCapitalize="none"
-              />
-            </View>
-
-            {/* Input de Contraseña (ACTUALIZADO) */}
-            <Text style={styles.label}>Contraseña</Text>
-            <View style={styles.inputWrapper}>
-              <Text style={styles.iconPlaceholder}>🔒</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="••••••••"
-                placeholderTextColor="#999"
-                secureTextEntry={!mostrarPassword} // Depende del estado
-              />
-
-              {/* Botón para mostrar/ocultar */}
+      {/* LADO IZQUIERDO (VERDE) - Formulario con Scroll */}
+      <ScrollView
+        style={styles.leftSide}
+        contentContainerStyle={styles.leftScrollContent}
+        showsVerticalScrollIndicator={true}
+      >
+        <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
+          <View style={styles.content}>
+            <View style={styles.header}>
               <TouchableOpacity
-                onPress={() => setMostrarPassword(!mostrarPassword)}
-                activeOpacity={0.7}
+                onPress={() => router.back()}
+                style={styles.backBtn}
               >
-                <Text style={styles.iconPlaceholder}>
-                  {mostrarPassword ? "😲" : "🫣"}
-                </Text>
+                <Ionicons name="arrow-back" size={24} color="#FFF" />
               </TouchableOpacity>
+              <Text style={styles.logoText}>Finbalance</Text>
             </View>
 
-            {/* Opciones y Botón Iniciar Sesión ... (resto del código igual) */}
-            <View style={styles.optionsRow}>
-              <View style={styles.checkboxGroup}>
-                <View style={styles.checkbox} />
-                <Text style={styles.optionText}>Recordarme</Text>
+            <View style={styles.textSpacing}>
+              <Text style={styles.mainTitle}>Bienvenido de vuelta</Text>
+              <Text style={styles.mainSubtitle}>
+                Inicia sesión para continuar
+              </Text>
+            </View>
+
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>Correo electrónico</Text>
+              <View style={styles.inputWrapper}>
+                <Ionicons
+                  name="mail-outline"
+                  size={20}
+                  color="#666"
+                  style={styles.icon}
+                />
+                <TextInput
+                  style={styles.input}
+                  placeholder="tu@email.com"
+                  placeholderTextColor="#999"
+                  value={email}
+                  onChangeText={setEmail}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                />
               </View>
-              <TouchableOpacity>
-                <Text style={styles.optionText}>¿Olvidaste tu contraseña?</Text>
-              </TouchableOpacity>
             </View>
 
-            <TouchableOpacity
-              onPress={() => router.push("/(app)/dashboard")}
-              style={styles.btnLogin}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.btnLoginText}>Iniciar sesión</Text>
+            <PasswordInput
+              label="Contraseña"
+              value={password}
+              onChangeText={setPassword}
+              placeholder="Tu contraseña"
+              showStrength={false}
+            />
+
+            <TouchableOpacity style={styles.forgotPassword}>
+              <Text style={styles.forgotPasswordText}>
+                ¿Olvidaste tu contraseña?
+              </Text>
             </TouchableOpacity>
 
-            <View style={styles.signupFooter}>
-              <Text style={styles.signupText}>¿No tienes una cuenta? </Text>
-              <TouchableOpacity
-                onPress={() => router.push("../register/signIn")}
-              >
-                <Text style={styles.signupLink}>Crear cuenta</Text>
+            <TouchableOpacity
+              style={styles.btnLogin}
+              onPress={handleLogin}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.btnLoginText}>Entrar</Text>
+            </TouchableOpacity>
+
+            <View style={styles.registerPrompt}>
+              <Text style={styles.registerPromptText}>
+                ¿No tienes una cuenta?{" "}
+              </Text>
+              <TouchableOpacity onPress={() => router.push("/(auth)/register")}>
+                <Text style={styles.registerLink}>Regístrate</Text>
               </TouchableOpacity>
             </View>
           </View>
-        </ScrollView>
-      </View>
+        </SafeAreaView>
+      </ScrollView>
 
+      {/* LADO DERECHO (BLANCO) - Visible solo en pantallas grandes */}
       {!esMovil && (
         <View style={styles.rightSide}>
-          <View style={styles.infoContent}>
-            <Text style={styles.infoTitle}>
-              Toma el control de tus finanzas
-            </Text>
-            <Text style={styles.infoDesc}>
-              Gestiona tus gastos, ahorra de manera inteligente y alcanza tus
-              metas financieras con Finbalance.
-            </Text>
-
-            <BeneficioItem
-              titulo="Seguimiento en tiempo real"
-              desc="Visualiza tus ingresos y gastos al instante"
-            />
-            <BeneficioItem
-              titulo="Reportes detallados"
-              desc="Obtén de manera gratuita una noción real de tu ganancia neta"
-            />
-            <BeneficioItem
-              titulo="Seguro y privado"
-              desc="Toda la información que compartas estará protegida"
-            />
-          </View>
+          <BenefitSide />
         </View>
       )}
     </View>
@@ -144,103 +127,69 @@ export default function PantallaLogin() {
 
 const styles = StyleSheet.create({
   mainContainer: { flex: 1, flexDirection: "row" },
-  leftSide: { flex: 1, backgroundColor: "#0C9488" },
-  scrollContent: { padding: 40, flexGrow: 1, justifyContent: "center" },
-  logoText: {
+  leftSide: { flex: 1, backgroundColor: "#0F8B7B" },
+  leftScrollContent: {
+    flexGrow: 1,
+    justifyContent: "center",
+  },
+  rightSide: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  content: {
+    padding: 40,
+    justifyContent: "center",
+    maxWidth: 600,
+    width: "100%",
+    alignSelf: "center",
+  },
+  header: { flexDirection: "row", alignItems: "center", marginBottom: 40 },
+  backBtn: { marginRight: 15 },
+  logoText: { fontSize: 24, fontWeight: "bold", color: "#FFF" },
+  textSpacing: { marginBottom: 30 },
+  mainTitle: {
     fontSize: 32,
     fontWeight: "bold",
     color: "#FFF",
-    position: "absolute",
-    top: 40,
-    left: 40,
+    marginBottom: 8,
   },
-  formContainer: { maxWidth: 450, width: "100%", alignSelf: "center" },
-  welcomeTitle: {
-    fontSize: 32,
-    fontWeight: "bold",
-    color: "#FFF",
-    marginBottom: 10,
-  },
-  welcomeSubtitle: { fontSize: 16, color: "#A3D5CE", marginBottom: 30 },
-  label: { color: "#FFF", fontSize: 14, marginBottom: 8, fontWeight: "600" },
+  mainSubtitle: { fontSize: 16, color: "#A3D5CE" },
+  inputGroup: { marginBottom: 20 },
+  label: { color: "#FFF", fontSize: 14, marginBottom: 12, fontWeight: "600" },
   inputWrapper: {
     flexDirection: "row",
     backgroundColor: "#FFF",
     borderRadius: 8,
     alignItems: "center",
     paddingHorizontal: 15,
-    marginBottom: 20,
+    borderWidth: 2,
+    borderColor: "transparent",
   },
-  iconPlaceholder: { fontSize: 18, color: "#666", marginRight: 10 },
-
-  // Input con la corrección del borde negro para Web
+  icon: { marginRight: 10 },
   input: {
     flex: 1,
-    paddingVertical: 12,
+    paddingVertical: 15,
     color: "#333",
     fontSize: 15,
-    outlineStyle: "none" as any,
+    ...Platform.select({ web: { outlineStyle: "none" } as any }),
   },
-
-  optionsRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 30,
-  },
-  checkboxGroup: { flexDirection: "row", alignItems: "center" },
-  checkbox: {
-    width: 18,
-    height: 18,
-    borderWidth: 1,
-    borderColor: "#A3D5CE",
-    borderRadius: 4,
-    marginRight: 8,
-  },
-  optionText: { color: "#FFF", fontSize: 13 },
+  forgotPassword: { alignSelf: "flex-end", marginBottom: 30 },
+  forgotPasswordText: { color: "#A3D5CE", fontSize: 14, fontWeight: "600" },
   btnLogin: {
     backgroundColor: "#FFF",
-    paddingVertical: 15,
+    paddingVertical: 18,
     borderRadius: 8,
     alignItems: "center",
+    marginBottom: 20,
   },
   btnLoginText: { color: "#0F8B7B", fontWeight: "bold", fontSize: 16 },
-  signupFooter: {
+  registerPrompt: {
     flexDirection: "row",
     justifyContent: "center",
-    marginTop: 30,
+    marginTop: 20,
   },
-  signupText: { color: "#FFF" },
-  signupLink: {
-    color: "#FFF",
-    fontWeight: "bold",
-    textDecorationLine: "underline",
-  },
-  rightSide: {
-    flex: 1,
-    backgroundColor: "#FFF",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  infoContent: { maxWidth: 450, padding: 20 },
-  infoTitle: {
-    fontSize: 32,
-    fontWeight: "bold",
-    color: "#333",
-    marginBottom: 15,
-  },
-  infoDesc: { fontSize: 16, color: "#666", marginBottom: 40, lineHeight: 24 },
-  benefitItem: { flexDirection: "row", marginBottom: 25 },
-  checkCircle: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: "#E8F5F3",
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 15,
-    marginTop: 2,
-  },
-  checkText: { color: "#0F8B7B", fontWeight: "bold", fontSize: 14 },
-  benefitTitle: { fontSize: 16, fontWeight: "bold", color: "#333" },
-  benefitDesc: { fontSize: 14, color: "#777" },
+  registerPromptText: { color: "#A3D5CE", fontSize: 15 },
+  registerLink: { color: "#FFF", fontSize: 15, fontWeight: "bold" },
 });
