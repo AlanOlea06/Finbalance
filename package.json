@@ -27,6 +27,8 @@
     "expo-symbols": "~56.0.5",
     "expo-system-ui": "~56.0.5",
     "expo-web-browser": "~56.0.5",
+    "express": "^4.18.2",
+    "pdfkit": "^0.14.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-native": "0.85.3",
@@ -38,9 +40,13 @@
     "react-native-worklets": "0.8.3"
   },
   "devDependencies": {
+    "@types/express": "^4.17.19",
+    "@types/node": "^20.11.5",
+    "@types/pdfkit": "^0.13.0",
     "@types/react": "~19.2.14",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~56.0.4",
+    "ts-node": "^10.9.1",
     "typescript": "~6.0.3"
   },
   "private": true
