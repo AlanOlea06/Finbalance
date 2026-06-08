@@ -1,5 +1,8 @@
+import { useRouter } from "expo-router";
+import * as WebBrowser from "expo-web-browser";
 import { useState } from "react";
 import {
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -136,7 +139,35 @@ const toggleStyles = StyleSheet.create({
 
 // ── Pantalla principal ─────────────────────────────────────────────
 export default function Dashboard() {
+  const router = useRouter();
   const [period, setPeriod] = useState<"semana" | "mes">("semana");
+  const [reportStatus, setReportStatus] = useState("");
+  const [isGeneratingReport, setIsGeneratingReport] = useState(false);
+
+  const backendHost = Platform.OS === "android" ? "http://10.0.2.2:3000" : "http://localhost:3000";
+
+  const generarReporteUrl = () => {
+    const today = new Date();
+    const mes = String(today.getMonth() + 1).padStart(2, "0");
+    const anio = String(today.getFullYear());
+    return `${backendHost}/api/reportes/financieros?mes=${mes}&anio=${anio}`;
+  };
+
+  const handleGenerarReporte = async () => {
+    try {
+      setIsGeneratingReport(true);
+      setReportStatus("");
+
+      const url = generarReporteUrl();
+      await WebBrowser.openBrowserAsync(url);
+      setReportStatus("Abriendo el reporte en el navegador...");
+    } catch (error) {
+      console.error("Error generando el reporte:", error);
+      setReportStatus("No se pudo abrir el reporte. Asegúrate de que el servidor esté activo.");
+    } finally {
+      setIsGeneratingReport(false);
+    }
+  };
 
   // Detecta el ancho en tiempo real (funciona en web y móvil)
   const { width } = useWindowDimensions();
@@ -233,6 +264,14 @@ export default function Dashboard() {
         <MyButton
           size={350}
           type="primary"
+          text="Generar reporte"
+          align="left"
+          onPress={handleGenerarReporte}
+          disabled={isGeneratingReport}
+        />
+        <MyButton
+          size={350}
+          type="primary"
           text="Ver historial"
           align="left"
           onPress={async () => console.log("historial")}
@@ -260,8 +299,20 @@ export default function Dashboard() {
         />
       </View>
 
+      {reportStatus ? (
+        <Text style={styles.reportStatus}>{reportStatus}</Text>
+      ) : null}
+
       <View style={{ height: 30 }} />
+      <MyButton
+        size={500}
+        type="primary"
+        text="Iniciar sesión"
+        align="center"
+        onPress={() => router.push("./(app)/dashboard")}
+      />
     </ScrollView>
+    
   );
 }
 
@@ -353,6 +404,12 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: COLORS.textMuted,
     marginTop: 2,
+  },
+  reportStatus: {
+    marginTop: 16,
+    fontSize: 13,
+    color: COLORS.textDark,
+    textAlign: "center",
   },
   emptyText: {
     fontSize: 12,
