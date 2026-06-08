@@ -1,3 +1,4 @@
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
     ScrollView,
@@ -12,6 +13,7 @@ import Step3 from "./Step3";
 import Step4 from "./Step4";
 
 export default function RegisterController() {
+  const router = useRouter();
   const { width } = useWindowDimensions();
   const esMovil = width < 768;
 
@@ -44,6 +46,7 @@ export default function RegisterController() {
     setIsLoading(true);
     try {
       alert("¡Cuenta creada exitosamente en Supabase!");
+      router.push("/dashboard");
     } catch (error) {
       alert("Error al crear cuenta");
     } finally {
