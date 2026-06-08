@@ -2,14 +2,14 @@ import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
-    Platform,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    useWindowDimensions,
-    View,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  useWindowDimensions,
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BenefitSide from "../../components/BenefitSide";
@@ -30,7 +30,7 @@ export default function Login() {
     }
     // Aquí iría tu lógica de conexión con Supabase
     alert("Iniciando sesión...");
-    // router.push("/(app)/dashboard");
+    router.push("/dashboard");
   };
 
   return (
