@@ -1,3 +1,4 @@
+import { useRouter } from "expo-router";
 import { useState } from "react";
 import {
   ScrollView,
@@ -9,7 +10,6 @@ import {
 } from "react-native";
 import { MyButton } from "../../components/ui/boton";
 
-// ── Breakpoint: por debajo de esto las cards se apilan en columna ──
 const CARDS_BREAKPOINT = 580;
 
 const COLORS = {
@@ -26,7 +26,6 @@ const COLORS = {
   dangerBg: "#FDF0E8",
 };
 
-// ── Barra de progreso ──────────────────────────────────────────────
 function ProgressBar({
   value,
   max,
@@ -59,7 +58,6 @@ const progressStyles = StyleSheet.create({
   fill: { height: "100%", borderRadius: 4 },
 });
 
-// ── Alerta de advertencia ──────────────────────────────────────────
 function WarningAlert({ text }: { text: string }) {
   return (
     <View style={alertStyles.container}>
@@ -82,7 +80,6 @@ const alertStyles = StyleSheet.create({
   text: { color: COLORS.danger, fontSize: 13, fontWeight: "500", flex: 1 },
 });
 
-// ── Toggle Semana / Mes ────────────────────────────────────────────
 function PeriodToggle({
   active,
   onChange,
@@ -134,8 +131,8 @@ const toggleStyles = StyleSheet.create({
   textActive: { color: COLORS.white },
 });
 
-// ── Pantalla principal ─────────────────────────────────────────────
 export default function Dashboard() {
+  const router = useRouter();
   const [period, setPeriod] = useState<"semana" | "mes">("semana");
 
   // Detecta el ancho en tiempo real (funciona en web y móvil)
@@ -151,27 +148,23 @@ export default function Dashboard() {
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      {/* Título */}
       <Text style={styles.title}>Bienvenido de nuevo, di</Text>
 
-      {/* Toggle periodo */}
       <PeriodToggle active={period} onChange={setPeriod} />
 
-      {/* Tarjeta ingresos */}
-      <View style={[styles.card, styles.incomeCard]}>
+        <View style={[styles.card, styles.incomeCard]}>
         <Text style={styles.cardLabel}>Ingresos de esta {period}</Text>
         <Text style={styles.incomeAmount}>${income.toFixed(2)}</Text>
         <Text style={styles.cardSub}>Tu ingreso total de esta {period}</Text>
       </View>
 
-      {/* ── Fila de 3 tarjetas — cambia a columna en pantallas pequeñas ── */}
+      {/* checeo si se necesita columnas de 3 tarjetas  */}
       <View
         style={[
           styles.cardsContainer,
           isNarrow ? styles.cardsColumn : styles.cardsRow,
         ]}
       >
-        {/* Gastos fijos */}
         <View style={[styles.card, isNarrow ? styles.cardFull : styles.cardFlex]}>
           <Text style={styles.cardLabel}>Gastos Fijos</Text>
           <View style={styles.amountRow}>
@@ -187,14 +180,9 @@ export default function Dashboard() {
           )}
         </View>
 
+
         {/* Ahorros */}
-        <View
-          style={[
-            styles.card,
-            styles.savingsCard,
-            isNarrow ? styles.cardFull : styles.cardFlex,
-          ]}
-        >
+        <View style={[styles.card, styles.savingsCard, isNarrow ? styles.cardFull : styles.cardFlex,]}>
           <Text style={styles.cardLabel}>Ahorros</Text>
           {ahorros === 0 ? (
             <>
@@ -235,7 +223,7 @@ export default function Dashboard() {
           type="primary"
           text="Ver historial"
           align="left"
-          onPress={async () => console.log("historial")}
+          onPress={() => router.push("./historial")}
         />
         <MyButton
           size={350}

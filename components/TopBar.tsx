@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const Navbar = () => {
+const TopBar = () => {
   const [visible, setVisible] = useState(false);
   const router = useRouter();
 
@@ -170,4 +170,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Navbar;
+export default TopBar;

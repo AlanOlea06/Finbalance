@@ -3,7 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import Navbar from '../../components/Navbar';
+import Navbar from '../../components/TopBar';
 
 const UserLoggedLayout = () => {
   return (
