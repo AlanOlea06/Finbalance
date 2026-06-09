@@ -1,6 +1,6 @@
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from "react-native";
 import { MyButton } from "../../components/ui/boton";
 
 const CARDS_BREAKPOINT = 580;
@@ -123,6 +123,8 @@ const toggleStyles = StyleSheet.create({
 
 export default function Dashboard() {
   const router = useRouter();
+  const { width } = useWindowDimensions();
+  const isNarrow = width < CARDS_BREAKPOINT;
   const [period, setPeriod] = useState<"semana" | "mes">("semana");
 
   const income = 400;
@@ -296,6 +298,23 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   rowCard: {
+    flex: 1,
+  },
+  cardsContainer: {
+    marginTop: 16,
+    gap: 12,
+  },
+  cardsRow: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+  },
+  cardsColumn: {
+    flexDirection: "column",
+  },
+  cardFull: {
+    width: "100%",
+  },
+  cardFlex: {
     flex: 1,
   },
   savingsCard: {
