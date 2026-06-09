@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
-import PasswordInput from "../../../components/PasswordInput";
+import PasswordInput from "./../../../components/PasswordInput";
 
 interface Step1Props {
   formData: any;

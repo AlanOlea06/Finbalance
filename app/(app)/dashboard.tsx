@@ -1,8 +1,18 @@
 import { useRouter } from "expo-router";
-import { useState } from "react";
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useEffect, useState } from "react";
+import {
+    ActivityIndicator,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    useWindowDimensions,
+    View,
+} from "react-native";
 import { MyButton } from "../../components/ui/boton";
+import { SummaryData, summaryService } from "../../lib/summaryService";
 
+// ── Breakpoint: por debajo de esto las cards se apilan en columna ──
 const CARDS_BREAKPOINT = 580;
 
 const COLORS = {
@@ -19,6 +29,7 @@ const COLORS = {
   dangerBg: "#FDF0E8",
 };
 
+// ── Barra de progreso ──────────────────────────────────────────────
 function ProgressBar({
   value,
   max,
@@ -28,11 +39,14 @@ function ProgressBar({
   max: number;
   color: string;
 }) {
-  const pct = Math.min((value / max) * 100, 100);
+  const pct = max > 0 ? Math.min((value / max) * 100, 100) : 0;
   return (
     <View style={progressStyles.track}>
       <View
-        style={[progressStyles.fill, { width: `${pct}%` as any, backgroundColor: color }]}
+        style={[
+          progressStyles.fill,
+          { width: `${pct}%` as any, backgroundColor: color },
+        ]}
       />
     </View>
   );
@@ -48,6 +62,7 @@ const progressStyles = StyleSheet.create({
   fill: { height: "100%", borderRadius: 4 },
 });
 
+// ── Alerta de advertencia ──────────────────────────────────────────
 function WarningAlert({ text }: { text: string }) {
   return (
     <View style={alertStyles.container}>
@@ -70,6 +85,7 @@ const alertStyles = StyleSheet.create({
   text: { color: COLORS.danger, fontSize: 13, fontWeight: "500", flex: 1 },
 });
 
+// ── Toggle Semana / Mes ────────────────────────────────────────────
 function PeriodToggle({
   active,
   onChange,
@@ -121,36 +137,76 @@ const toggleStyles = StyleSheet.create({
   textActive: { color: COLORS.white },
 });
 
+// ── Pantalla principal ─────────────────────────────────────────────
 export default function Dashboard() {
-  const router = useRouter();
   const [period, setPeriod] = useState<"semana" | "mes">("semana");
+  const [summary, setSummary] = useState<SummaryData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const income = 400;
-  const gastosFijos = 375;
-  const ahorros = 0;
-  const disponible = income - gastosFijos;
-  const pctGastos = Math.round((gastosFijos / income) * 100);
-  const pctDisponible = Math.round((disponible / income) * 100);
+  // Detecta el ancho en tiempo real (funciona en web y móvil)
+  const { width } = useWindowDimensions();
+  const router = useRouter();
+  const isNarrow = width < CARDS_BREAKPOINT;
+
+  const income = summary?.totalIncomes ?? 0;
+  const gastosFijos = summary?.totalFixedExpenses ?? 0;
+  const ahorros = summary?.totalSavingsCurrent ?? 0;
+  const disponible = summary?.availableForAntSpending ?? 0;
+  const pctGastos = income > 0 ? Math.round((gastosFijos / income) * 100) : 0;
+  const pctDisponible = income > 0 ? Math.round((disponible / income) * 100) : 0;
+
+  useEffect(() => {
+    const loadSummary = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const data = await summaryService.getSummary(period);
+        setSummary(data);
+      } catch (err: any) {
+        setError(err?.message ?? 'Error al cargar los datos del resumen');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadSummary();
+  }, [period]);
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      {/* Título */}
       <Text style={styles.title}>Bienvenido de nuevo, di</Text>
 
+      {/* Toggle periodo */}
       <PeriodToggle active={period} onChange={setPeriod} />
 
-        <View style={[styles.card, styles.incomeCard]}>
+      {error ? (
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorText}>{error}</Text>
+        </View>
+      ) : loading ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={COLORS.primary} />
+        </View>
+      ) : null}
+
+      {/* Tarjeta ingresos */}
+      <View style={[styles.card, styles.incomeCard]}>
         <Text style={styles.cardLabel}>Ingresos de esta {period}</Text>
         <Text style={styles.incomeAmount}>${income.toFixed(2)}</Text>
         <Text style={styles.cardSub}>Tu ingreso total de esta {period}</Text>
       </View>
 
-      {/* checeo si se necesita columnas de 3 tarjetas  */}
+      {/* ── Fila de 3 tarjetas — cambia a columna en pantallas pequeñas ── */}
       <View
         style={[
           styles.cardsContainer,
           isNarrow ? styles.cardsColumn : styles.cardsRow,
         ]}
       >
+        {/* Gastos fijos */}
         <View style={[styles.card, isNarrow ? styles.cardFull : styles.cardFlex]}>
           <Text style={styles.cardLabel}>Gastos Fijos</Text>
           <View style={styles.amountRow}>
@@ -166,34 +222,36 @@ export default function Dashboard() {
           )}
         </View>
 
-
         {/* Ahorros */}
-        <View style={[styles.card, styles.savingsCard, isNarrow ? styles.cardFull : styles.cardFlex,]}>
+        <View
+          style={[
+            styles.card,
+            styles.savingsCard,
+            isNarrow ? styles.cardFull : styles.cardFlex,
+          ]}
+        >
           <Text style={styles.cardLabel}>Ahorros</Text>
           {ahorros === 0 ? (
             <>
               <Text style={styles.emptyText}>
                 ¿Aún no te propones ningún ahorro?
               </Text>
-              <TouchableOpacity
-                style={styles.adjustBtn}
-                activeOpacity={0.75}
-              >
+              <TouchableOpacity style={styles.adjustBtn} activeOpacity={0.75}>
                 <Text style={styles.adjustBtnText}>⚙ Ajustar Metas</Text>
               </TouchableOpacity>
             </>
           ) : (
             <>
               <View style={styles.amountRow}>
-                <Text style={styles.cardAmount}>${ahorros}</Text>
+                <Text style={styles.cardAmount}>${ahorros.toFixed(2)}</Text>
               </View>
               <ProgressBar value={ahorros} max={income} color={COLORS.primary} />
             </>
           )}
         </View>
 
-        {/* Disponible */}
-        <View style={[styles.card, styles.rowCard]}>
+        {/* Dinero disponible */}
+        <View style={[styles.card, isNarrow ? styles.cardFull : styles.cardFlex]}>
           <Text style={[styles.cardLabel, { fontSize: 12 }]}>
             Dinero disponible para ahorros y gastos hormiga
           </Text>
@@ -208,32 +266,32 @@ export default function Dashboard() {
       {/* Botones */}
       <View style={styles.botonesConteiner}>
         <MyButton
-          size= {350}
+          size={350}
           type="primary"
           text="Ver historial"
           align="left"
-          onPress={() => router.push("./historial")}
+          onPress={() => router.push('/transactions')}
         />
         <MyButton
-          size= {350}
+          size={350}
           type="secondary"
           text="Registrar Ingreso"
           align="left"
-          onPress={async () => console.log("ingreso")}
+          onPress={() => router.push('/transaction/new?type=ingreso')}
         />
         <MyButton
-          size= {350}
+          size={350}
           type="secondary"
           text="Agregar Gasto"
           align="left"
-          onPress={async () => console.log("gasto")}
+          onPress={() => router.push('/transaction/new?type=gasto')}
         />
         <MyButton
-          size= {350}
+          size={350}
           type="secondary"
           text="Ajustar metas"
           align="left"
-          onPress={async () => console.log("metas")}
+          onPress={() => router.push('/goals')}
         />
       </View>
 
@@ -255,7 +313,28 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 
-  // Tarjetas
+  // Contenedor de las 3 cards
+  cardsContainer: {
+    marginTop: 16,
+    gap: 12,
+  },
+  cardsRow: {
+    flexDirection: "row",      // pantallas anchas: en fila
+    alignItems: "flex-start",  // cada card toma su propia altura
+  },
+  cardsColumn: {
+    flexDirection: "column",   // pantallas angostas: en columna
+  },
+
+  // Tamaño de cada card según modo
+  cardFlex: {
+    flex: 1,       // en fila: reparten el espacio proporcionalmente
+  },
+  cardFull: {
+    width: "100%", // en columna: ancho completo
+  },
+
+  // Base de todas las cards
   card: {
     backgroundColor: COLORS.white,
     borderRadius: 14,
@@ -270,6 +349,9 @@ const styles = StyleSheet.create({
     marginTop: 18,
     borderLeftWidth: 4,
     borderLeftColor: "#2563EB",
+  },
+  savingsCard: {
+    justifyContent: "space-between",
   },
   cardLabel: {
     fontSize: 13,
@@ -287,19 +369,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: COLORS.textMuted,
     marginTop: 2,
-  },
-
-  // Fila de tarjetas 
-  row: {
-    flexDirection: "row",
-    gap: 12,
-    marginTop: 16,
-  },
-  rowCard: {
-    flex: 1,
-  },
-  savingsCard: {
-    justifyContent: "space-between",
   },
   amountRow: {
     flexDirection: "row",
@@ -320,7 +389,34 @@ const styles = StyleSheet.create({
     color: COLORS.textMuted,
     marginTop: 2,
   },
-  // Cuando no hay ahorros
+  loadingContainer: {
+    marginTop: 24,
+    marginBottom: 14,
+    padding: 18,
+    backgroundColor: COLORS.white,
+    borderRadius: 14,
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 2,
+  },
+  errorContainer: {
+    marginTop: 24,
+    marginBottom: 14,
+    padding: 18,
+    backgroundColor: "#FDECEA",
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: "#F5C6CB",
+  },
+  errorText: {
+    color: "#B02A37",
+    fontSize: 14,
+    textAlign: "center",
+  },
   emptyText: {
     fontSize: 12,
     color: COLORS.textMuted,

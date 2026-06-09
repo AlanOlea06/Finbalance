@@ -22,7 +22,7 @@ const Index = () => {
               type="primary"
               text="Iniciar sesión"
               align="center"
-              onPress={() => router.push("./login")}
+              onPress={() => router.push("/(auth)/login")}
             />
             <MyButton
               size={500}

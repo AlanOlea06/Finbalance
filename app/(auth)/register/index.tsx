@@ -6,21 +6,23 @@ import {
     useWindowDimensions,
     View,
 } from "react-native";
-import BenefitSide from "../../../components/BenefitSide";
+import BenefitSide from "./../../../components/BenefitSide";
+import { authService, RegistrationData } from "../../../lib/authService";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
 import Step4 from "./Step4";
 
 export default function RegisterController() {
-  const router = useRouter();
   const { width } = useWindowDimensions();
   const esMovil = width < 768;
 
+  const router = useRouter();
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [registerError, setRegisterError] = useState<string | null>(null);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<RegistrationData>({
     nombre: "",
     email: "",
     password: "",
@@ -44,11 +46,14 @@ export default function RegisterController() {
 
   const handleFinalSubmit = async () => {
     setIsLoading(true);
+    setRegisterError(null);
+
     try {
-      alert("¡Cuenta creada exitosamente en Supabase!");
-      router.push("/dashboard");
-    } catch (error) {
-      alert("Error al crear cuenta");
+      await authService.signUp(formData);
+      alert("¡Cuenta creada exitosamente! Inicia sesión para continuar.");
+      router.replace("/login");
+    } catch (error: any) {
+      setRegisterError(error?.message ?? "Error al crear cuenta");
     } finally {
       setIsLoading(false);
     }

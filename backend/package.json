@@ -1,0 +1,17 @@
+{
+  "name": "finbalance-backend",
+  "version": "1.0.0",
+  "description": "Backend para generación de PDFs",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.2",
+    "pdfkit": "^0.14.0"
+  }
+}

@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import ProgressBar from "../../../components/ProgressBar";
+import ProgressBar from "./../../../components/ProgressBar";
 
 export default function Step3({ formData, setFormData, onNext, onBack }: any) {
   return (

@@ -2,18 +2,20 @@ import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  useWindowDimensions,
-  View,
+    ActivityIndicator,
+    Platform,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    useWindowDimensions,
+    View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import BenefitSide from "../../components/BenefitSide";
-import PasswordInput from "../../components/PasswordInput";
+import BenefitSide from "./../../components/BenefitSide";
+import PasswordInput from "./../../components/PasswordInput";
+import { authService } from "../../lib/authService";
 
 export default function Login() {
   const router = useRouter();
@@ -22,15 +24,26 @@ export default function Login() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [loginError, setLoginError] = useState<string | null>(null);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!email || !password) {
-      alert("Por favor, llena todos los campos.");
+      setLoginError("Por favor, llena todos los campos.");
       return;
     }
-    // Aquí iría tu lógica de conexión con Supabase
-    alert("Iniciando sesión...");
-    router.push("/dashboard");
+
+    setIsLoading(true);
+    setLoginError(null);
+
+    try {
+      await authService.signIn(email, password);
+      router.replace("/(app)/dashboard");
+    } catch (error: any) {
+      setLoginError(error?.message ?? "Error al iniciar sesión.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -99,9 +112,18 @@ export default function Login() {
               style={styles.btnLogin}
               onPress={handleLogin}
               activeOpacity={0.8}
+              disabled={isLoading}
             >
-              <Text style={styles.btnLoginText}>Entrar</Text>
+              {isLoading ? (
+                <ActivityIndicator color="#0F8B7B" />
+              ) : (
+                <Text style={styles.btnLoginText}>Entrar</Text>
+              )}
             </TouchableOpacity>
+
+            {loginError ? (
+              <Text style={styles.errorText}>{loginError}</Text>
+            ) : null}
 
             <View style={styles.registerPrompt}>
               <Text style={styles.registerPromptText}>
@@ -192,4 +214,10 @@ const styles = StyleSheet.create({
   },
   registerPromptText: { color: "#A3D5CE", fontSize: 15 },
   registerLink: { color: "#FFF", fontSize: 15, fontWeight: "bold" },
+  errorText: {
+    color: "#FDCACA",
+    textAlign: "center",
+    marginBottom: 15,
+    fontSize: 14,
+  },
 });
