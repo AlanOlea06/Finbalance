@@ -1,13 +1,6 @@
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  useWindowDimensions,
-  View,
-} from "react-native";
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { MyButton } from "../../components/ui/boton";
 
 const CARDS_BREAKPOINT = 580;
@@ -39,10 +32,7 @@ function ProgressBar({
   return (
     <View style={progressStyles.track}>
       <View
-        style={[
-          progressStyles.fill,
-          { width: `${pct}%` as any, backgroundColor: color },
-        ]}
+        style={[progressStyles.fill, { width: `${pct}%` as any, backgroundColor: color }]}
       />
     </View>
   );
@@ -135,10 +125,6 @@ export default function Dashboard() {
   const router = useRouter();
   const [period, setPeriod] = useState<"semana" | "mes">("semana");
 
-  // Detecta el ancho en tiempo real (funciona en web y móvil)
-  const { width } = useWindowDimensions();
-  const isNarrow = width < CARDS_BREAKPOINT;
-
   const income = 400;
   const gastosFijos = 375;
   const ahorros = 0;
@@ -189,7 +175,10 @@ export default function Dashboard() {
               <Text style={styles.emptyText}>
                 ¿Aún no te propones ningún ahorro?
               </Text>
-              <TouchableOpacity style={styles.adjustBtn} activeOpacity={0.75}>
+              <TouchableOpacity
+                style={styles.adjustBtn}
+                activeOpacity={0.75}
+              >
                 <Text style={styles.adjustBtnText}>⚙ Ajustar Metas</Text>
               </TouchableOpacity>
             </>
@@ -203,8 +192,8 @@ export default function Dashboard() {
           )}
         </View>
 
-        {/* Dinero disponible */}
-        <View style={[styles.card, isNarrow ? styles.cardFull : styles.cardFlex]}>
+        {/* Disponible */}
+        <View style={[styles.card, styles.rowCard]}>
           <Text style={[styles.cardLabel, { fontSize: 12 }]}>
             Dinero disponible para ahorros y gastos hormiga
           </Text>
@@ -219,28 +208,28 @@ export default function Dashboard() {
       {/* Botones */}
       <View style={styles.botonesConteiner}>
         <MyButton
-          size={350}
+          size= {350}
           type="primary"
           text="Ver historial"
           align="left"
           onPress={() => router.push("./historial")}
         />
         <MyButton
-          size={350}
+          size= {350}
           type="secondary"
           text="Registrar Ingreso"
           align="left"
           onPress={async () => console.log("ingreso")}
         />
         <MyButton
-          size={350}
+          size= {350}
           type="secondary"
           text="Agregar Gasto"
           align="left"
           onPress={async () => console.log("gasto")}
         />
         <MyButton
-          size={350}
+          size= {350}
           type="secondary"
           text="Ajustar metas"
           align="left"
@@ -266,28 +255,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 
-  // Contenedor de las 3 cards
-  cardsContainer: {
-    marginTop: 16,
-    gap: 12,
-  },
-  cardsRow: {
-    flexDirection: "row",      // pantallas anchas: en fila
-    alignItems: "flex-start",  // cada card toma su propia altura
-  },
-  cardsColumn: {
-    flexDirection: "column",   // pantallas angostas: en columna
-  },
-
-  // Tamaño de cada card según modo
-  cardFlex: {
-    flex: 1,       // en fila: reparten el espacio proporcionalmente
-  },
-  cardFull: {
-    width: "100%", // en columna: ancho completo
-  },
-
-  // Base de todas las cards
+  // Tarjetas
   card: {
     backgroundColor: COLORS.white,
     borderRadius: 14,
@@ -302,9 +270,6 @@ const styles = StyleSheet.create({
     marginTop: 18,
     borderLeftWidth: 4,
     borderLeftColor: "#2563EB",
-  },
-  savingsCard: {
-    justifyContent: "space-between",
   },
   cardLabel: {
     fontSize: 13,
@@ -322,6 +287,19 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: COLORS.textMuted,
     marginTop: 2,
+  },
+
+  // Fila de tarjetas 
+  row: {
+    flexDirection: "row",
+    gap: 12,
+    marginTop: 16,
+  },
+  rowCard: {
+    flex: 1,
+  },
+  savingsCard: {
+    justifyContent: "space-between",
   },
   amountRow: {
     flexDirection: "row",
@@ -342,6 +320,7 @@ const styles = StyleSheet.create({
     color: COLORS.textMuted,
     marginTop: 2,
   },
+  // Cuando no hay ahorros
   emptyText: {
     fontSize: 12,
     color: COLORS.textMuted,
