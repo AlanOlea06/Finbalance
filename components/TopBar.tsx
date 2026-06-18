@@ -16,17 +16,17 @@ const TopBar = () => {
   const router = useRouter();
 
   const handleNavigation = (route: string) => {
-    router.push(route as Href);
+    router.replace(route as Href);
   };
 
   return (
     <>
       <SafeAreaView>
         <View style={styles.container}>
-          <TouchableOpacity activeOpacity={0.7} style={styles.logoContainer}>
-            <Text
-              style={{ fontSize: 24, fontWeight: "bold", color: "#FFFFFF" }}
-            >
+          <TouchableOpacity activeOpacity={0.7} style={styles.logoContainer}
+            onPress={() => handleNavigation("/(app)/dashboard")}
+          >
+            <Text style={{ fontSize: 24, fontWeight: "bold", color: "#FFFFFF" }}>
               Finbalance
             </Text>
           </TouchableOpacity>
@@ -36,7 +36,7 @@ const TopBar = () => {
               name="notifications-outline"
               size={28}
               color="#FFFFFF"
-              onPress={() => handleNavigation("/(app)/dashboard")}
+              onPress={() => alert("Notificaciones")}
             />
             <Ionicons
               name="person-circle-outline"
@@ -96,6 +96,7 @@ const TopBar = () => {
               </View>
             </TouchableWithoutFeedback>
           </Modal>
+
         </View>
       </SafeAreaView>
     </>

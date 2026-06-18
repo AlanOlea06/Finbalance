@@ -221,21 +221,21 @@ export default function Dashboard() {
           type="secondary"
           text="Registrar Ingreso"
           align="left"
-          onPress={async () => console.log("ingreso")}
+          onPress={async () => router.push("./ingreso")}
         />
         <MyButton
           size= {350}
           type="secondary"
           text="Agregar Gasto"
           align="left"
-          onPress={async () => console.log("gasto")}
+          onPress={async () => router.push("./gasto")}
         />
         <MyButton
           size= {350}
           type="secondary"
           text="Ajustar metas"
           align="left"
-          onPress={async () => console.log("metas")}
+          onPress={async () => router.push("./metas")}
         />
       </View>
 
