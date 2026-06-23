@@ -141,7 +141,7 @@ export default function Dashboard() {
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      <Text style={styles.title}>Bienvenido de nuevo, di</Text>
+      <Text style={styles.title}>Bienvenido de nuevo Finbalancero</Text>
 
       <PeriodToggle active={period} onChange={setPeriod} />
 
