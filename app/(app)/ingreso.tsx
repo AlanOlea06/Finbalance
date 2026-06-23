@@ -11,25 +11,10 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
+import { COLORS } from "../../constants/colors";
 
 // ── Breakpoints ────────────────────────────────────────────────────
 const CARDS_BREAKPOINT = 580;
-
-// ── Colores (mismos que el resto de la app) ────────────────────────
-const COLORS = {
-  primary: "#0C9488",
-  primaryLight: "#E6F7F1",
-  orange: "#E07B3A",
-  orangeLight: "#FDF0E8",
-  background: "#F2F4F7",
-  white: "#FFFFFF",
-  textDark: "#1A2332",
-  textMuted: "#8A97A8",
-  border: "#E8ECF0",
-  danger: "#DC2626",
-  dangerBg: "#FEF2F2",
-  success: "#16A34A",
-};
 
 // ── Tipos ──────────────────────────────────────────────────────────
 type TipoRecurrencia = "recurrente" | "no-recurrente";
@@ -129,8 +114,14 @@ const toggleStyles = StyleSheet.create({
     borderRadius: 8,
     alignItems: "center",
   },
-  text: { fontSize: 13, fontWeight: "600", color: COLORS.textMuted },
-  textActive: { color: COLORS.white },
+  text: {
+    fontSize: 13,
+    fontWeight: "600",
+    color: COLORS.textMuted
+  },
+  textActive: {
+    color: COLORS.white
+  },
 });
 
 // ────────────────────────────────────────────────────────────────────
@@ -213,7 +204,11 @@ const cardStyles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
   },
-  row: { flexDirection: "row", alignItems: "center", gap: 12 },
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12
+  },
   iconCircle: {
     width: 44,
     height: 44,
@@ -221,26 +216,56 @@ const cardStyles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  iconText: { fontSize: 20, fontWeight: "700" },
-  content: { flex: 1 },
-  nombre: { fontSize: 14, fontWeight: "700", color: COLORS.textDark, marginBottom: 2 },
-  amountRow: { flexDirection: "row", alignItems: "baseline", gap: 2 },
-  cantidad: { fontSize: 18, fontWeight: "700" },
-  periodo: { fontSize: 12, color: COLORS.textMuted },
-  tags: { fontSize: 11, color: COLORS.textMuted, marginTop: 2 },
+  iconText: {
+    fontSize: 20,
+    fontWeight: "700"
+  },
+  content: {
+    flex: 1
+  },
+  nombre: {
+    fontSize: 14,
+    fontWeight: "700",
+    color: COLORS.textDark,
+    marginBottom: 2
+  },
+  amountRow: {
+    flexDirection: "row",
+    alignItems: "baseline",
+    gap: 2
+  },
+  cantidad: {
+    fontSize: 18,
+    fontWeight: "700"
+  },
+  periodo: {
+    fontSize: 12,
+    color: COLORS.textMuted
+  },
+  tags: {
+    fontSize: 11,
+    color: COLORS.textMuted,
+    marginTop: 2
+  },
   badge: {
     borderRadius: 20,
     paddingVertical: 4,
     paddingHorizontal: 10,
   },
-  badgeText: { fontSize: 11, fontWeight: "600" },
+  badgeText: {
+    fontSize: 11,
+    fontWeight: "600"
+  },
   footer: {
     marginTop: 12,
     paddingTop: 10,
     borderTopWidth: 1,
     borderTopColor: COLORS.border,
   },
-  footerText: { fontSize: 12, fontWeight: "500" },
+  footerText: {
+    fontSize: 12,
+    fontWeight: "500"
+  },
 });
 
 // ────────────────────────────────────────────────────────────────────
@@ -441,8 +466,16 @@ const modalStyles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 20,
   },
-  title: { fontSize: 18, fontWeight: "700", color: COLORS.textDark },
-  closeBtn: { fontSize: 18, color: COLORS.textMuted, padding: 4 },
+  title: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: COLORS.textDark
+  },
+  closeBtn: {
+    fontSize: 18,
+    color: COLORS.textMuted,
+    padding: 4
+  },
   label: {
     fontSize: 13,
     fontWeight: "600",
@@ -488,7 +521,11 @@ const modalStyles = StyleSheet.create({
     padding: 10,
     marginTop: 12,
   },
-  errorText: { color: COLORS.danger, fontSize: 13, fontWeight: "500" },
+  errorText: {
+    color: COLORS.danger,
+    fontSize: 13,
+    fontWeight: "500"
+  },
   actions: {
     flexDirection: "row",
     gap: 10,
@@ -503,7 +540,11 @@ const modalStyles = StyleSheet.create({
     borderColor: COLORS.border,
     alignItems: "center",
   },
-  btnCancelarText: { fontSize: 14, fontWeight: "600", color: COLORS.textMuted },
+  btnCancelarText: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: COLORS.textMuted
+  },
   btnGuardar: {
     flex: 2,
     paddingVertical: 13,
@@ -511,7 +552,11 @@ const modalStyles = StyleSheet.create({
     backgroundColor: COLORS.primary,
     alignItems: "center",
   },
-  btnGuardarText: { fontSize: 14, fontWeight: "700", color: COLORS.white },
+  btnGuardarText: {
+    fontSize: 14,
+    fontWeight: "700",
+    color: COLORS.white
+  },
 });
 
 // ────────────────────────────────────────────────────────────────────

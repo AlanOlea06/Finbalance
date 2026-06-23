@@ -1,35 +1,20 @@
 import { useState } from "react";
 import {
-    KeyboardAvoidingView,
-    Modal,
-    Platform,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    useWindowDimensions,
-    View,
+  KeyboardAvoidingView,
+  Modal,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  useWindowDimensions,
+  View,
 } from "react-native";
+import { COLORS } from "../../constants/colors";
 
 // ── Breakpoints ────────────────────────────────────────────────────
 const CARDS_BREAKPOINT = 580;
-
-// ── Colores (mismos que el resto de la app) ────────────────────────
-const COLORS = {
-  primary: "#0C9488",
-  primaryLight: "#E6F7F1",
-  orange: "#E07B3A",
-  orangeLight: "#FDF0E8",
-  background: "#F2F4F7",
-  white: "#FFFFFF",
-  textDark: "#1A2332",
-  textMuted: "#8A97A8",
-  border: "#E8ECF0",
-  danger: "#DC2626",
-  dangerBg: "#FEF2F2",
-  success: "#16A34A",
-};
 
 // ── Tipos ──────────────────────────────────────────────────────────
 type TipoRecurrencia = "recurrente" | "no-recurrente";

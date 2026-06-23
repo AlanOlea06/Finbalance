@@ -11,27 +11,10 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
+import { COLORS } from "../../constants/colors";
 
 // ── Breakpoints ────────────────────────────────────────────────────
 const CARDS_BREAKPOINT = 580;
-
-// ── Colores (mismos que el resto de la app) ────────────────────────
-const COLORS = {
-  primary: "#0C9488",
-  primaryLight: "#E6F7F1",
-  orange: "#E07B3A",
-  orangeLight: "#FDF0E8",
-  background: "#F2F4F7",
-  white: "#FFFFFF",
-  textDark: "#1A2332",
-  textMuted: "#8A97A8",
-  border: "#E8ECF0",
-  danger: "#DC2626",
-  dangerBg: "#FEF2F2",
-  dangerBorder: "#FECACA",
-  success: "#16A34A",
-  successBg: "#DCFCE7",
-};
 
 // ── Tipos ──────────────────────────────────────────────────────────
 type TipoRecurrencia = "recurrente" | "no-recurrente";
@@ -173,7 +156,12 @@ const cardStyles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
   },
-  row: { flexDirection: "row", alignItems: "flex-start", gap: 10, marginBottom: 14 },
+  row: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    gap: 10,
+    marginBottom: 14
+  },
   iconCircle: {
     width: 36,
     height: 36,
@@ -182,11 +170,29 @@ const cardStyles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  iconText: { fontSize: 18, color: COLORS.danger },
-  info: { flex: 1 },
-  nombre: { fontSize: 12, color: COLORS.textMuted, fontWeight: "500", marginBottom: 2 },
-  cantidad: { fontSize: 20, fontWeight: "700", color: COLORS.danger, marginBottom: 2 },
-  periodo: { fontSize: 12, color: COLORS.textMuted },
+  iconText: {
+    fontSize: 18,
+    color: COLORS.danger
+  },
+  info: {
+    flex: 1
+  },
+  nombre: {
+    fontSize: 12,
+    color: COLORS.textMuted,
+    fontWeight: "500",
+    marginBottom: 2
+  },
+  cantidad: {
+    fontSize: 20,
+    fontWeight: "700",
+    color: COLORS.danger,
+    marginBottom: 2
+  },
+  periodo: {
+    fontSize: 12,
+    color: COLORS.textMuted
+  },
   registrarBtn: {
     flexDirection: "row",
     alignItems: "center",
@@ -196,8 +202,15 @@ const cardStyles = StyleSheet.create({
     borderRadius: 8,
     paddingVertical: 9,
   },
-  registrarIcon: { fontSize: 14, color: COLORS.textMuted },
-  registrarText: { fontSize: 13, color: COLORS.textMuted, fontWeight: "500" },
+  registrarIcon: {
+    fontSize: 14,
+    color: COLORS.textMuted
+  },
+  registrarText: {
+    fontSize: 13,
+    color: COLORS.textMuted,
+    fontWeight: "500"
+  },
 });
 
 // ────────────────────────────────────────────────────────────────────
@@ -230,9 +243,23 @@ const emptyStyles = StyleSheet.create({
     elevation: 2,
     marginBottom: 8,
   },
-  icon: { fontSize: 32, color: COLORS.textMuted, marginBottom: 12 },
-  title: { fontSize: 16, fontWeight: "700", color: COLORS.textDark, marginBottom: 6 },
-  subtitle: { fontSize: 13, color: COLORS.textMuted, textAlign: "center", lineHeight: 20 },
+  icon: {
+    fontSize: 32,
+    color: COLORS.textMuted,
+    marginBottom: 12
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: COLORS.textDark,
+    marginBottom: 6
+  },
+  subtitle: {
+    fontSize: 13,
+    color: COLORS.textMuted,
+    textAlign: "center",
+    lineHeight: 20
+  },
 });
 
 // ────────────────────────────────────────────────────────────────────
@@ -247,9 +274,21 @@ function SectionHeader({ title, subtitle }: { title: string; subtitle?: string }
   );
 }
 const sectionStyles = StyleSheet.create({
-  row: { flexDirection: "row", alignItems: "baseline", gap: 8, marginBottom: 12 },
-  title: { fontSize: 17, fontWeight: "700", color: COLORS.textDark },
-  subtitle: { fontSize: 12, color: COLORS.textMuted },
+  row: {
+    flexDirection: "row",
+    alignItems: "baseline",
+    gap: 8,
+    marginBottom: 12
+  },
+  title: {
+    fontSize: 17,
+    fontWeight: "700",
+    color: COLORS.textDark
+  },
+  subtitle: {
+    fontSize: 12,
+    color: COLORS.textMuted
+  },
 });
 
 // ────────────────────────────────────────────────────────────────────
@@ -410,9 +449,23 @@ const modalStyles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 20,
   },
-  title: { fontSize: 18, fontWeight: "700", color: COLORS.textDark },
-  closeBtn: { fontSize: 18, color: COLORS.textMuted, padding: 4 },
-  label: { fontSize: 13, fontWeight: "600", color: COLORS.textDark, marginTop: 16, marginBottom: 8 },
+  title: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: COLORS.textDark
+  },
+  closeBtn: {
+    fontSize: 18,
+    color: COLORS.textMuted,
+    padding: 4
+  },
+  label: {
+    fontSize: 13,
+    fontWeight: "600",
+    color: COLORS.textDark,
+    marginTop: 16,
+    marginBottom: 8
+  },
   input: {
     borderWidth: 1,
     borderColor: COLORS.border,
@@ -433,11 +486,35 @@ const modalStyles = StyleSheet.create({
     paddingLeft: 12,
     overflow: "hidden",
   },
-  currencySymbol: { fontSize: 16, fontWeight: "700", color: COLORS.textMuted, marginRight: 4 },
-  hint: { fontSize: 11, color: COLORS.orange, marginTop: 6, lineHeight: 16 },
-  errorBox: { backgroundColor: "#FEF2F2", borderRadius: 8, padding: 10, marginTop: 12 },
-  errorText: { color: COLORS.danger, fontSize: 13, fontWeight: "500" },
-  actions: { flexDirection: "row", gap: 10, marginTop: 24, marginBottom: 4 },
+  currencySymbol: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: COLORS.textMuted,
+    marginRight: 4
+  },
+  hint: {
+    fontSize: 11,
+    color: COLORS.orange,
+    marginTop: 6,
+    lineHeight: 16
+  },
+  errorBox: {
+    backgroundColor: "#FEF2F2",
+    borderRadius: 8,
+    padding: 10,
+    marginTop: 12
+  },
+  errorText: {
+    color: COLORS.danger,
+    fontSize: 13,
+    fontWeight: "500"
+  },
+  actions: {
+    flexDirection: "row",
+    gap: 10,
+    marginTop: 24,
+    marginBottom: 4
+  },
   btnCancelar: {
     flex: 1,
     paddingVertical: 13,
@@ -446,7 +523,11 @@ const modalStyles = StyleSheet.create({
     borderColor: COLORS.border,
     alignItems: "center",
   },
-  btnCancelarText: { fontSize: 14, fontWeight: "600", color: COLORS.textMuted },
+  btnCancelarText: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: COLORS.textMuted
+  },
   btnGuardar: {
     flex: 2,
     paddingVertical: 13,
@@ -454,7 +535,11 @@ const modalStyles = StyleSheet.create({
     backgroundColor: COLORS.primary,
     alignItems: "center",
   },
-  btnGuardarText: { fontSize: 14, fontWeight: "700", color: COLORS.white },
+  btnGuardarText: {
+    fontSize: 14,
+    fontWeight: "700",
+    color: COLORS.white
+  },
 });
 
 // ────────────────────────────────────────────────────────────────────

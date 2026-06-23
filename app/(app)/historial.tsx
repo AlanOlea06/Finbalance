@@ -7,27 +7,10 @@ import {
 	useWindowDimensions,
 	View,
 } from "react-native";
+import { COLORS } from "../../constants/colors";
 
 const CARDS_BREAKPOINT = 580;  // resumen general: fila → columna
 const STATS_BREAKPOINT = 420;  // stat cards: 4 en fila → 2x2
-
-const COLORS = {
-	primary: "#0C9488",
-	primaryLight: "#E6F7F1",
-	orange: "#E07B3A",
-	background: "#F2F4F7",
-	white: "#FFFFFF",
-	textDark: "#1A2332",
-	textMuted: "#8A97A8",
-	border: "#E8ECF0",
-	danger: "#DC2626",
-	dangerBg: "#FEF2F2",
-	dangerBorder: "#FECACA",
-	success: "#16A34A",
-	successBg: "#DCFCE7",
-	blue: "#2563EB",
-	blueBg: "#EFF6FF",
-};
 
 // ── Tipos ──────────────────────────────────────────────────────────
 type MonthReport = {
@@ -75,10 +58,27 @@ const bannerStyles = StyleSheet.create({
 		padding: 12,
 		marginBottom: 20,
 	},
-	content: { flexDirection: "row", flex: 1, flexWrap: "wrap" },
-	label: { color: COLORS.danger, fontWeight: "700", fontSize: 14 },
-	message: { color: COLORS.danger, fontSize: 14, flex: 1 },
-	close: { color: COLORS.danger, fontSize: 16, fontWeight: "700", paddingLeft: 12 },
+	content: { 
+		flexDirection: "row",
+		flex: 1,
+		flexWrap: "wrap" 
+	},
+	label: { 
+		color: COLORS.danger,
+		fontWeight: "700",
+		fontSize: 14
+	},
+	message: { 
+		color: COLORS.danger,
+		fontSize: 14,
+		flex: 1
+	},
+	close: {
+		color: COLORS.danger,
+		fontSize: 16,
+		fontWeight: "700",
+		paddingLeft: 12
+	},
 });
 
 type StatCardProps = {
@@ -120,10 +120,24 @@ const statStyles = StyleSheet.create({
 		alignItems: "center",
 		marginBottom: 6,
 	},
-	label: { fontSize: 12, color: COLORS.textMuted, fontWeight: "500", flex: 1 },
-	icon: { fontSize: 16 },
-	value: { fontSize: 22, fontWeight: "700" },
-	note: { fontSize: 11, color: COLORS.textMuted, marginTop: 2 },
+	label: {
+		fontSize: 12,
+		color: COLORS.textMuted,
+		fontWeight: "500",
+		flex: 1
+	},
+	icon: {
+		fontSize: 16
+	},
+	value: {
+		fontSize: 22,
+		fontWeight: "700"
+	},
+	note: {
+		fontSize: 11,
+		color: COLORS.textMuted,
+		marginTop: 2 
+	},
 });
 
 function YearPicker({
@@ -189,8 +203,14 @@ const yearStyles = StyleSheet.create({
 		paddingHorizontal: 14,
 		paddingVertical: 8,
 	},
-	arrowDisabled: { opacity: 0.3 },
-	arrow: { fontSize: 18, color: COLORS.textDark, fontWeight: "600" },
+	arrowDisabled: {
+		opacity: 0.3 
+	},
+	arrow: {
+		fontSize: 18,
+		color: COLORS.textDark,
+		fontWeight: "600"
+	},
 	yearBox: {
 		paddingHorizontal: 16,
 		paddingVertical: 8,
@@ -198,7 +218,11 @@ const yearStyles = StyleSheet.create({
 		borderRightWidth: 1,
 		borderColor: COLORS.border,
 	},
-	yearText: { fontSize: 14, fontWeight: "600", color: COLORS.textDark },
+	yearText: {
+		fontSize: 14,
+		fontWeight: "600",
+		color: COLORS.textDark
+	},
 });
 
 // ────────────────────────────────────────────────────────────────────
@@ -259,13 +283,37 @@ const reportCardStyles = StyleSheet.create({
 		alignItems: "center",
 		marginBottom: 12,
 	},
-	month: { fontSize: 15, fontWeight: "700", color: COLORS.textDark },
-	balance: { fontSize: 15, fontWeight: "700" },
-	stats: { flexDirection: "row", alignItems: "center" },
-	stat: { flex: 1, alignItems: "center" },
-	statLabel: { fontSize: 11, color: COLORS.textMuted, marginBottom: 2 },
-	statValue: { fontSize: 13, fontWeight: "600" },
-	divider: { width: 1, height: 30, backgroundColor: COLORS.border },
+	month: {
+		fontSize: 15,
+		fontWeight: "700",
+		color: COLORS.textDark
+	},
+	balance: {
+		fontSize: 15,
+		fontWeight: "700"
+	},
+	stats: {
+		flexDirection: "row",
+		alignItems: "center"
+	},
+	stat: {
+		flex: 1,
+		alignItems: "center"
+	},
+	statLabel: {
+		fontSize: 11,
+		color: COLORS.textMuted,
+		marginBottom: 2
+	},
+	statValue: {
+		fontSize: 13,
+		fontWeight: "600"
+	},
+	divider: {
+		width: 1,
+		height: 30,
+		backgroundColor: COLORS.border
+	},
 });
 
 export default function HistorialFinanciero() {

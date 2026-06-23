@@ -2,22 +2,9 @@ import { useRouter } from "expo-router";
 import { useState } from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from "react-native";
 import { MyButton } from "../../components/ui/boton";
+import { COLORS } from "../../constants/colors";
 
 const CARDS_BREAKPOINT = 580;
-
-const COLORS = {
-  primary: "#0C9488",
-  primaryLight: "#E6F7F1",
-  orange: "#E07B3A",
-  orangeLight: "#FDF0E8",
-  background: "#F2F4F7",
-  white: "#FFFFFF",
-  textDark: "#1A2332",
-  textMuted: "#8A97A8",
-  border: "#E8ECF0",
-  danger: "#E07B3A",
-  dangerBg: "#FDF0E8",
-};
 
 function ProgressBar({
   value,
@@ -45,7 +32,10 @@ const progressStyles = StyleSheet.create({
     overflow: "hidden",
     marginVertical: 8,
   },
-  fill: { height: "100%", borderRadius: 4 },
+  fill: {
+    height: "100%",
+    borderRadius: 4
+  },
 });
 
 function WarningAlert({ text }: { text: string }) {
@@ -66,8 +56,15 @@ const alertStyles = StyleSheet.create({
     marginTop: 10,
     gap: 8,
   },
-  icon: { fontSize: 14 },
-  text: { color: COLORS.danger, fontSize: 13, fontWeight: "500", flex: 1 },
+  icon: {
+    fontSize: 14
+  },
+  text: {
+    color: COLORS.danger,
+    fontSize: 13,
+    fontWeight: "500",
+    flex: 1
+  },
 });
 
 function PeriodToggle({
@@ -116,9 +113,17 @@ const toggleStyles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 8,
   },
-  btnActive: { backgroundColor: COLORS.primary },
-  text: { fontSize: 14, fontWeight: "600", color: COLORS.textMuted },
-  textActive: { color: COLORS.white },
+  btnActive: {
+    backgroundColor: COLORS.primary
+  },
+  text: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: COLORS.textMuted
+  },
+  textActive: {
+    color: COLORS.white
+  },
 });
 
 export default function Dashboard() {
