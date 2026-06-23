@@ -1,15 +1,15 @@
 import { useState } from "react";
 import {
-  KeyboardAvoidingView,
-  Modal,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  useWindowDimensions,
-  View,
+    KeyboardAvoidingView,
+    Modal,
+    Platform,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    useWindowDimensions,
+    View,
 } from "react-native";
 
 // ── Breakpoints ────────────────────────────────────────────────────
@@ -131,116 +131,6 @@ const toggleStyles = StyleSheet.create({
   },
   text: { fontSize: 13, fontWeight: "600", color: COLORS.textMuted },
   textActive: { color: COLORS.white },
-});
-
-// ────────────────────────────────────────────────────────────────────
-// Componente: Tarjeta de gasto
-// ────────────────────────────────────────────────────────────────────
-function GastoCard({ gasto }: { gasto: Gasto }) {
-  const isHormiga = gasto.tipoGasto === "hormiga";
-  const iconBg = isHormiga ? COLORS.orangeLight : COLORS.primaryLight;
-  const iconColor = isHormiga ? COLORS.orange : COLORS.primary;
-  const labelRecurrencia =
-    gasto.tipoRecurrencia === "recurrente"
-      ? "Gasto Recurrente"
-      : "Gasto Único";
-  const labelPeriodo =
-    gasto.tipoRecurrencia === "recurrente"
-      ? gasto.periodicidad.charAt(0).toUpperCase() + gasto.periodicidad.slice(1)
-      : null;
-  const labelTipo = isHormiga ? "Gasto Hormiga" : "Necesario/Normal";
-
-  return (
-    <View style={cardStyles.container}>
-      <View style={cardStyles.row}>
-        {/* Icono */}
-        <View style={[cardStyles.iconCircle, { backgroundColor: iconBg }]}>
-          <Text style={[cardStyles.iconText, { color: iconColor }]}>$</Text>
-        </View>
-
-        {/* Contenido */}
-        <View style={cardStyles.content}>
-          <Text style={cardStyles.nombre}>{gasto.nombre}</Text>
-          <View style={cardStyles.amountRow}>
-            <Text style={[cardStyles.cantidad, { color: iconColor }]}>
-              ${gasto.cantidad.toFixed(2)}
-            </Text>
-            {labelPeriodo && (
-              <Text style={cardStyles.periodo}>/{gasto.periodicidad}</Text>
-            )}
-          </View>
-          <Text style={cardStyles.tags}>
-            {[labelPeriodo, labelRecurrencia].filter(Boolean).join(" • ")}
-          </Text>
-        </View>
-
-        {/* Badge tipo */}
-        <View
-          style={[
-            cardStyles.badge,
-            { backgroundColor: isHormiga ? COLORS.orangeLight : COLORS.primaryLight },
-          ]}
-        >
-          <Text
-            style={[cardStyles.badgeText, { color: iconColor }]}
-          >
-            {isHormiga ? "🐜 Hormiga" : "✓ Normal"}
-          </Text>
-        </View>
-      </View>
-
-      {/* Pie */}
-      <View style={cardStyles.footer}>
-        <Text style={[cardStyles.footerText, { color: iconColor }]}>
-          Activo •{" "}
-          {gasto.tipoRecurrencia === "recurrente"
-            ? "Se descuenta automáticamente"
-            : "Gasto registrado"}
-        </Text>
-      </View>
-    </View>
-  );
-}
-const cardStyles = StyleSheet.create({
-  container: {
-    backgroundColor: COLORS.white,
-    borderRadius: 14,
-    padding: 16,
-    marginBottom: 12,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.06,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  row: { flexDirection: "row", alignItems: "center", gap: 12 },
-  iconCircle: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  iconText: { fontSize: 20, fontWeight: "700" },
-  content: { flex: 1 },
-  nombre: { fontSize: 14, fontWeight: "700", color: COLORS.textDark, marginBottom: 2 },
-  amountRow: { flexDirection: "row", alignItems: "baseline", gap: 2 },
-  cantidad: { fontSize: 18, fontWeight: "700" },
-  periodo: { fontSize: 12, color: COLORS.textMuted },
-  tags: { fontSize: 11, color: COLORS.textMuted, marginTop: 2 },
-  badge: {
-    borderRadius: 20,
-    paddingVertical: 4,
-    paddingHorizontal: 10,
-  },
-  badgeText: { fontSize: 11, fontWeight: "600" },
-  footer: {
-    marginTop: 12,
-    paddingTop: 10,
-    borderTopWidth: 1,
-    borderTopColor: COLORS.border,
-  },
-  footerText: { fontSize: 12, fontWeight: "500" },
 });
 
 // ────────────────────────────────────────────────────────────────────
@@ -515,13 +405,12 @@ const modalStyles = StyleSheet.create({
 });
 
 // ────────────────────────────────────────────────────────────────────
-// Pantalla principal: Tus Gastos
+// Pantalla principal: Metas
 // ────────────────────────────────────────────────────────────────────
-export default function Ingresos() {
+export default function Metas() {
   const { width } = useWindowDimensions();
   const isNarrow = width < CARDS_BREAKPOINT;
-
-  const [gastos, setGastos] = useState<Gasto[]>(GASTOS_INICIALES);
+  
   const [modalVisible, setModalVisible] = useState(false);
 
   function handleGuardar(form: FormData) {
@@ -533,59 +422,25 @@ export default function Ingresos() {
       periodicidad: form.periodicidad,
       tipoGasto: form.tipoGasto,
     };
-    setGastos((prev) => [...prev, nuevo]);
+    //setGastos((prev) => [...prev, nuevo]);
     setModalVisible(false);
   }
 
-  const gastosFijos = gastos.filter((g) => g.tipoRecurrencia === "recurrente");
-  const otrosGastos = gastos.filter((g) => g.tipoRecurrencia === "no-recurrente");
-
   return (
     <>
-      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      <ScrollView style={styles.container}>
 
         {/* Encabezado */}
         <View style={[styles.pageHeader, isNarrow && styles.pageHeaderNarrow]}>
-          <Text style={styles.pageTitle}>Tus Ingreso</Text>
+          <Text style={styles.pageTitle}>Metas</Text>
           <TouchableOpacity
             style={styles.addBtn}
             onPress={() => setModalVisible(true)}
             activeOpacity={0.85}
           >
-            <Text style={styles.addBtnText}>+ Agregar Nuevo Ingreso</Text>
+            <Text style={styles.addBtnText}>+ Agregar Nueva Meta</Text>
           </TouchableOpacity>
         </View>
-
-        {/* ── Ingresos Fijos (recurrentes) ── */}
-        <Text style={styles.sectionTitle}>Ingresos Fijos</Text>
-        {gastosFijos.length === 0 ? (
-          <View style={styles.emptyBox}>
-            <Text style={styles.emptyIcon}>$</Text>
-            <Text style={styles.emptyTitle}>Sin ingresos fijos</Text>
-            <Text style={styles.emptySubtitle}>
-              Aún no has registrado ingresos recurrentes.
-            </Text>
-          </View>
-        ) : (
-          gastosFijos.map((g) => <GastoCard key={g.id} gasto={g} />)
-        )}
-
-        {/* ── Otros Ingresos (no recurrentes) ── */}
-        <View style={styles.otrosSectionHeader}>
-          <Text style={styles.sectionTitle}>Otros ingresos</Text>
-          <Text style={styles.sectionSubtitle}>Registros de este mes.</Text>
-        </View>
-        {otrosGastos.length === 0 ? (
-          <View style={styles.emptyBox}>
-            <Text style={styles.emptyIcon}>$</Text>
-            <Text style={styles.emptyTitle}>Sin ingresos variables</Text>
-            <Text style={styles.emptySubtitle}>
-              Aún no has registrado otros ingresos este mes.
-            </Text>
-          </View>
-        ) : (
-          otrosGastos.map((g) => <GastoCard key={g.id} gasto={g} />)
-        )}
 
         <View style={{ height: 30 }} />
       </ScrollView>

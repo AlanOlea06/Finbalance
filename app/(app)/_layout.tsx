@@ -9,7 +9,7 @@ const UserLoggedLayout = () => {
   return (
     <SafeAreaProvider>
       <View style={styles.container}>
-        <StatusBar style="light" />
+        <StatusBar backgroundColor="#0C9488" style="light" />
         <Navbar />
         <View style={styles.content}>
           <Slot />
