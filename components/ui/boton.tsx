@@ -13,7 +13,10 @@ type ButtonAlign = 'left' | 'center' | 'right';
 
 type Props = {
 	paddingVertical?: number;
-	size: number;
+	/** @deprecated Usa minWidth/maxWidth para un control más flexible */
+	size?: number;
+	minWidth?: number;
+	maxWidth?: number;
 	text: string;
 	type?: ButtonType;
 	align?: ButtonAlign;
@@ -24,6 +27,8 @@ type Props = {
 
 export function MyButton({
 	size,
+	minWidth,
+	maxWidth,
 	text,
 	type = 'primary',
 	align = 'left',
@@ -55,6 +60,12 @@ export function MyButton({
 
 	const isPrimary = type === 'primary';
 
+	// Si se pasa `size`, se respeta como ancho fijo (backward compat).
+	// De lo contrario, el botón crece con flex: 1 respetando min/maxWidth.
+	const sizeStyle = size !== undefined
+		? { width: size }
+		: { flex: 1, minWidth, maxWidth };
+
 	return (
 		<TouchableOpacity
 			accessibilityRole="button"
@@ -63,9 +74,9 @@ export function MyButton({
 			accessibilityHint={loading ? 'Loading' : undefined}
 			style={[
 				styles.button,
+				sizeStyle,
 				{
 					paddingVertical: paddingVertical || 16,
-					width: size,
 					borderRadius: 8,
 					alignSelf: alignMap[align],
 					backgroundColor: isPrimary ? ButtonColors.primary : ButtonColors.secondary,

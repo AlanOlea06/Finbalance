@@ -11,6 +11,7 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
+import { MyButton } from "../../components/ui/boton";
 import { COLORS } from "../../constants/colors";
 
 // ── Breakpoints ────────────────────────────────────────────────────
@@ -19,15 +20,15 @@ const CARDS_BREAKPOINT = 580;
 // ── Tipos ──────────────────────────────────────────────────────────
 type TipoRecurrencia = "recurrente" | "no-recurrente";
 type Periodicidad = "mensual" | "semanal";
-type TipoGasto = "hormiga" | "normal";
+type TipoIngreso = "hormiga" | "normal";
 
-type Gasto = {
+type Ingreso = {
   id: number;
   nombre: string;
   cantidad: number;
   tipoRecurrencia: TipoRecurrencia;
   periodicidad: Periodicidad;
-  tipoGasto: TipoGasto;
+  tipoIngreso: TipoIngreso;
 };
 
 type FormData = {
@@ -35,7 +36,7 @@ type FormData = {
   cantidad: string;
   tipoRecurrencia: TipoRecurrencia;
   periodicidad: Periodicidad;
-  tipoGasto: TipoGasto;
+  tipoIngreso: TipoIngreso;
 };
 
 const FORM_INICIAL: FormData = {
@@ -43,18 +44,18 @@ const FORM_INICIAL: FormData = {
   cantidad: "",
   tipoRecurrencia: "recurrente",
   periodicidad: "mensual",
-  tipoGasto: "normal",
+  tipoIngreso: "normal",
 };
 
 // ── Datos de ejemplo ───────────────────────────────────────────────
-const GASTOS_INICIALES: Gasto[] = [
+const INGRESOS_INICIALES: Ingreso[] = [
   {
     id: 1,
-    nombre: "Renta",
+    nombre: "Pago",
     cantidad: 3500,
     tipoRecurrencia: "recurrente",
     periodicidad: "mensual",
-    tipoGasto: "normal",
+    tipoIngreso: "normal",
   },
 ];
 
@@ -125,21 +126,20 @@ const toggleStyles = StyleSheet.create({
 });
 
 // ────────────────────────────────────────────────────────────────────
-// Componente: Tarjeta de gasto
+// Componente: Tarjeta de ingreso
 // ────────────────────────────────────────────────────────────────────
-function GastoCard({ gasto }: { gasto: Gasto }) {
-  const isHormiga = gasto.tipoGasto === "hormiga";
+function IngresoCard({ ingreso }: { ingreso: Ingreso }) {
+  const isHormiga = ingreso.tipoIngreso === "hormiga";
   const iconBg = isHormiga ? COLORS.orangeLight : COLORS.primaryLight;
   const iconColor = isHormiga ? COLORS.orange : COLORS.primary;
   const labelRecurrencia =
-    gasto.tipoRecurrencia === "recurrente"
-      ? "Gasto Recurrente"
-      : "Gasto Único";
+    ingreso.tipoRecurrencia === "recurrente"
+      ? "Ingreso Recurrente"
+      : "Ingreso Único";
   const labelPeriodo =
-    gasto.tipoRecurrencia === "recurrente"
-      ? gasto.periodicidad.charAt(0).toUpperCase() + gasto.periodicidad.slice(1)
+    ingreso.tipoRecurrencia === "recurrente"
+      ? ingreso.periodicidad.charAt(0).toUpperCase() + ingreso.periodicidad.slice(1)
       : null;
-  const labelTipo = isHormiga ? "Gasto Hormiga" : "Necesario/Normal";
 
   return (
     <View style={cardStyles.container}>
@@ -151,13 +151,13 @@ function GastoCard({ gasto }: { gasto: Gasto }) {
 
         {/* Contenido */}
         <View style={cardStyles.content}>
-          <Text style={cardStyles.nombre}>{gasto.nombre}</Text>
+          <Text style={cardStyles.nombre}>{ingreso.nombre}</Text>
           <View style={cardStyles.amountRow}>
             <Text style={[cardStyles.cantidad, { color: iconColor }]}>
-              ${gasto.cantidad.toFixed(2)}
+              ${ingreso.cantidad.toFixed(2)}
             </Text>
             {labelPeriodo && (
-              <Text style={cardStyles.periodo}>/{gasto.periodicidad}</Text>
+              <Text style={cardStyles.periodo}>/{ingreso.periodicidad}</Text>
             )}
           </View>
           <Text style={cardStyles.tags}>
@@ -184,9 +184,9 @@ function GastoCard({ gasto }: { gasto: Gasto }) {
       <View style={cardStyles.footer}>
         <Text style={[cardStyles.footerText, { color: iconColor }]}>
           Activo •{" "}
-          {gasto.tipoRecurrencia === "recurrente"
-            ? "Se descuenta automáticamente"
-            : "Gasto registrado"}
+          {ingreso.tipoRecurrencia === "recurrente"
+            ? "Se añade automáticamente"
+            : "Ingreso registrado"}
         </Text>
       </View>
     </View>
@@ -291,7 +291,7 @@ function FormModal({
 
   function handleGuardar() {
     if (!form.nombre.trim()) {
-      setError("El nombre del gasto es obligatorio.");
+      setError("El nombre del ingreso es obligatorio.");
       return;
     }
     const cantidadNum = parseFloat(form.cantidad);
@@ -332,7 +332,7 @@ function FormModal({
         <View style={[modalStyles.card, { width: modalWidth }]}>
           {/* Encabezado */}
           <View style={modalStyles.header}>
-            <Text style={modalStyles.title}>Nuevo Gasto</Text>
+            <Text style={modalStyles.title}>Nuevo Ingreso</Text>
             <TouchableOpacity onPress={handleClose} activeOpacity={0.7}>
               <Text style={modalStyles.closeBtn}>✕</Text>
             </TouchableOpacity>
@@ -343,7 +343,7 @@ function FormModal({
             keyboardShouldPersistTaps="handled"
           >
             {/* Tipo de recurrencia */}
-            <Text style={modalStyles.label}>Tipo de gasto</Text>
+            <Text style={modalStyles.label}>Tipo de ingreso</Text>
             <OptionToggle
               options={[
                 { value: "recurrente", label: "Recurrente" },
@@ -369,33 +369,14 @@ function FormModal({
             )}
 
             {/* Nombre */}
-            <Text style={modalStyles.label}>Nombre del gasto</Text>
+            <Text style={modalStyles.label}>Nombre del ingreso</Text>
             <TextInput
               style={modalStyles.input}
-              placeholder="Ej. Netflix, Renta, Café..."
+              placeholder="Ej. Salario, Regalo, Venta..."
               placeholderTextColor={COLORS.textMuted}
               value={form.nombre}
               onChangeText={(v) => set("nombre", v)}
             />
-
-            {/* Tipo de gasto */}
-            <Text style={modalStyles.label}>Categoría del gasto</Text>
-            <OptionToggle
-              options={[
-                { value: "normal", label: "Necesario / Normal" },
-                { value: "hormiga", label: "🐜 Gasto Hormiga" },
-              ]}
-              value={form.tipoGasto}
-              onChange={(v) => set("tipoGasto", v)}
-              activeColor={
-                form.tipoGasto === "hormiga" ? COLORS.orange : COLORS.primary
-              }
-            />
-            {form.tipoGasto === "hormiga" && (
-              <Text style={modalStyles.hint}>
-                Los gastos hormiga son pequeños y frecuentes que suman mucho sin que te des cuenta.
-              </Text>
-            )}
 
             {/* Cantidad */}
             <Text style={modalStyles.label}>Cantidad</Text>
@@ -420,20 +401,19 @@ function FormModal({
 
             {/* Botones */}
             <View style={modalStyles.actions}>
-              <TouchableOpacity
-                style={modalStyles.btnCancelar}
-                onPress={handleClose}
-                activeOpacity={0.7}
-              >
-                <Text style={modalStyles.btnCancelarText}>Cancelar</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={modalStyles.btnGuardar}
-                onPress={handleGuardar}
-                activeOpacity={0.8}
-              >
-                <Text style={modalStyles.btnGuardarText}>Guardar gasto</Text>
-              </TouchableOpacity>
+              <MyButton
+                type="secondary"
+                text="Cancelar"
+                align="center"
+                onPress={() => handleClose()}
+              />  
+
+              <MyButton
+                type="primary"
+                text="Guardar ingreso"
+                align="center"
+                onPress={() => handleGuardar()}
+              />  
             </View>
           </ScrollView>
         </View>
@@ -509,12 +489,6 @@ const modalStyles = StyleSheet.create({
     color: COLORS.textMuted,
     marginRight: 4,
   },
-  hint: {
-    fontSize: 11,
-    color: COLORS.orange,
-    marginTop: 6,
-    lineHeight: 16,
-  },
   errorBox: {
     backgroundColor: "#FEF2F2",
     borderRadius: 8,
@@ -532,31 +506,6 @@ const modalStyles = StyleSheet.create({
     marginTop: 24,
     marginBottom: 4,
   },
-  btnCancelar: {
-    flex: 1,
-    paddingVertical: 13,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    alignItems: "center",
-  },
-  btnCancelarText: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: COLORS.textMuted
-  },
-  btnGuardar: {
-    flex: 2,
-    paddingVertical: 13,
-    borderRadius: 10,
-    backgroundColor: COLORS.primary,
-    alignItems: "center",
-  },
-  btnGuardarText: {
-    fontSize: 14,
-    fontWeight: "700",
-    color: COLORS.white
-  },
 });
 
 // ────────────────────────────────────────────────────────────────────
@@ -566,24 +515,24 @@ export default function Ingresos() {
   const { width } = useWindowDimensions();
   const isNarrow = width < CARDS_BREAKPOINT;
 
-  const [gastos, setGastos] = useState<Gasto[]>(GASTOS_INICIALES);
+  const [ingresos, setIngresos] = useState<Ingreso[]>(INGRESOS_INICIALES);
   const [modalVisible, setModalVisible] = useState(false);
 
   function handleGuardar(form: FormData) {
-    const nuevo: Gasto = {
+    const nuevo: Ingreso = {
       id: Date.now(),
       nombre: form.nombre.trim(),
       cantidad: parseFloat(form.cantidad),
       tipoRecurrencia: form.tipoRecurrencia,
       periodicidad: form.periodicidad,
-      tipoGasto: form.tipoGasto,
+      tipoIngreso: form.tipoIngreso,
     };
-    setGastos((prev) => [...prev, nuevo]);
+    setIngresos((prev) => [...prev, nuevo]);
     setModalVisible(false);
   }
 
-  const gastosFijos = gastos.filter((g) => g.tipoRecurrencia === "recurrente");
-  const otrosGastos = gastos.filter((g) => g.tipoRecurrencia === "no-recurrente");
+  const ingresosFijos = ingresos.filter((i) => i.tipoRecurrencia === "recurrente");
+  const otrosIngresos = ingresos.filter((i) => i.tipoRecurrencia === "no-recurrente");
 
   return (
     <>
@@ -591,19 +540,21 @@ export default function Ingresos() {
 
         {/* Encabezado */}
         <View style={[styles.pageHeader, isNarrow && styles.pageHeaderNarrow]}>
-          <Text style={styles.pageTitle}>Tus Ingreso</Text>
-          <TouchableOpacity
-            style={styles.addBtn}
+          <Text style={styles.pageTitle}>Tus Ingresos</Text>
+          
+          {/*styles.addBtn*/}
+          <MyButton
+            maxWidth={300}
+            type="primary"
+            text="+ Agregar Nuevo Ingreso"
+            align="center"
             onPress={() => setModalVisible(true)}
-            activeOpacity={0.85}
-          >
-            <Text style={styles.addBtnText}>+ Agregar Nuevo Ingreso</Text>
-          </TouchableOpacity>
+          />  
         </View>
 
         {/* ── Ingresos Fijos (recurrentes) ── */}
         <Text style={styles.sectionTitle}>Ingresos Fijos</Text>
-        {gastosFijos.length === 0 ? (
+        {ingresosFijos.length === 0 ? (
           <View style={styles.emptyBox}>
             <Text style={styles.emptyIcon}>$</Text>
             <Text style={styles.emptyTitle}>Sin ingresos fijos</Text>
@@ -612,7 +563,7 @@ export default function Ingresos() {
             </Text>
           </View>
         ) : (
-          gastosFijos.map((g) => <GastoCard key={g.id} gasto={g} />)
+          ingresosFijos.map((i) => <IngresoCard key={i.id} ingreso={i} />)
         )}
 
         {/* ── Otros Ingresos (no recurrentes) ── */}
@@ -620,7 +571,7 @@ export default function Ingresos() {
           <Text style={styles.sectionTitle}>Otros ingresos</Text>
           <Text style={styles.sectionSubtitle}>Registros de este mes.</Text>
         </View>
-        {otrosGastos.length === 0 ? (
+        {otrosIngresos.length === 0 ? (
           <View style={styles.emptyBox}>
             <Text style={styles.emptyIcon}>$</Text>
             <Text style={styles.emptyTitle}>Sin ingresos variables</Text>
@@ -629,7 +580,7 @@ export default function Ingresos() {
             </Text>
           </View>
         ) : (
-          otrosGastos.map((g) => <GastoCard key={g.id} gasto={g} />)
+          otrosIngresos.map((i) => <IngresoCard key={i.id} ingreso={i} />)
         )}
 
         <View style={{ height: 30 }} />

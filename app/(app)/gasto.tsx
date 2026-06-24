@@ -1,3 +1,4 @@
+import { MyButton } from "@/components/ui/boton";
 import { useState } from "react";
 import {
   KeyboardAvoidingView,
@@ -18,8 +19,8 @@ const CARDS_BREAKPOINT = 580;
 
 // ── Tipos ──────────────────────────────────────────────────────────
 type TipoRecurrencia = "recurrente" | "no-recurrente";
-type Periodicidad    = "mensual" | "semanal";
-type TipoGasto       = "hormiga" | "normal";
+type Periodicidad = "mensual" | "semanal";
+type TipoGasto = "hormiga" | "normal";
 
 type Gasto = {
   id: number;
@@ -110,7 +111,7 @@ const toggleStyles = StyleSheet.create({
 });
 
 // ────────────────────────────────────────────────────────────────────
-// Componente: Tarjeta de gasto  (diseño actualizado según imagen)
+// Componente: Tarjeta de gasto 
 // ────────────────────────────────────────────────────────────────────
 function GastoCard({ gasto }: { gasto: Gasto }) {
   const periodo =
@@ -378,8 +379,8 @@ function FormModal({
             <Text style={modalStyles.label}>Categoría del gasto</Text>
             <OptionToggle
               options={[
-                { value: "normal",   label: "Necesario / Normal" },
-                { value: "hormiga",  label: "🐜 Gasto Hormiga" },
+                { value: "normal", label: "Necesario / Normal" },
+                { value: "hormiga", label: "🐜 Gasto Hormiga" },
               ]}
               value={form.tipoGasto}
               onChange={(v) => set("tipoGasto", v)}
@@ -411,12 +412,19 @@ function FormModal({
             )}
 
             <View style={modalStyles.actions}>
-              <TouchableOpacity style={modalStyles.btnCancelar} onPress={handleClose} activeOpacity={0.7}>
-                <Text style={modalStyles.btnCancelarText}>Cancelar</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={modalStyles.btnGuardar} onPress={handleGuardar} activeOpacity={0.8}>
-                <Text style={modalStyles.btnGuardarText}>Guardar gasto</Text>
-              </TouchableOpacity>
+              <MyButton
+                type="secondary"
+                text="Cancelar"
+                align="center"
+                onPress={() => handleClose()}
+              />
+
+              <MyButton
+                type="primary"
+                text="Guardar gasto"
+                align="center"
+                onPress={() => handleGuardar()}
+              />
             </View>
           </ScrollView>
         </View>
@@ -566,7 +574,7 @@ export default function TusGastos() {
   }
 
   // ── Clasificación de gastos por sección ───────────────────────
-  const gastosFijos   = gastos.filter((g) => g.tipoRecurrencia === "recurrente");
+  const gastosFijos = gastos.filter((g) => g.tipoRecurrencia === "recurrente");
   const gastosHormiga = gastos.filter((g) => g.tipoGasto === "hormiga" && g.tipoRecurrencia === "no-recurrente");
 
   return (
@@ -576,13 +584,14 @@ export default function TusGastos() {
         {/* Encabezado */}
         <View style={[styles.pageHeader, isNarrow && styles.pageHeaderNarrow]}>
           <Text style={styles.pageTitle}>Tus Gastos</Text>
-          <TouchableOpacity
-            style={styles.addBtn}
+          
+          <MyButton
+            maxWidth={300}
+            type="primary"
+            text="+ Agregar Nuevo Gasto"
+            align="center"
             onPress={() => setModalVisible(true)}
-            activeOpacity={0.85}
-          >
-            <Text style={styles.addBtnText}>+ Agregar Nuevo Gasto</Text>
-          </TouchableOpacity>
+          />
         </View>
 
         {/* ── Gastos Fijos ── */}

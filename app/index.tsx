@@ -18,14 +18,14 @@ const Index = () => {
           {/* Buttons Section */}
           <View style={styles.buttonSection}>
             <MyButton
-              size={500}
+              minWidth={500}
               type="primary"
               text="Iniciar sesión"
               align="center"
               onPress={() => router.push("./login")}
             />
             <MyButton
-              size={500}
+              minWidth={500}
               type="secondary"
               text="Registrarse"
               align="center"

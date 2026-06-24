@@ -215,28 +215,28 @@ export default function Dashboard() {
       {/* Botones */}
       <View style={styles.botonesConteiner}>
         <MyButton
-          size= {350}
+          minWidth={200}
           type="primary"
           text="Ver historial"
           align="left"
           onPress={() => router.push("./historial")}
         />
         <MyButton
-          size= {350}
+          minWidth={200}
           type="secondary"
           text="Registrar Ingreso"
           align="left"
           onPress={async () => router.push("./ingreso")}
         />
         <MyButton
-          size= {350}
+          minWidth={200}
           type="secondary"
           text="Agregar Gasto"
           align="left"
           onPress={async () => router.push("./gasto")}
         />
         <MyButton
-          size= {350}
+          minWidth={200}
           type="secondary"
           text="Ajustar metas"
           align="left"
